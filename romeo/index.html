@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071a35">
+<meta name="description" content="UC PAF ROTC Romeo Strategic Operations portal. Under construction.">
+
+<title>UC PAF ROTC</title>
+
+<style>
+:root {
+  --navy: #071a35;
+  --deep: #103961;
+  --blue: #265c91;
+  --sky: #79b6e7;
+  --ice: #d8ebfa;
+  --white: #ffffff;
+  --muted: #b8d5eb;
+  --border: rgba(170,220,255,.22);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--white);
+
+  /* Shared Air Force background */
+  background:
+    radial-gradient(
+      ellipse at 50% 20%,
+      #265c91 0%,
+      #103961 40%,
+      #071a35 100%
+    );
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      rgba(170,220,255,.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(170,220,255,.045) 1px,
+      transparent 1px
+    );
+  background-size: 38px 38px;
+}
+
+/* PAGE STRUCTURE */
+
+.container {
+  position: relative;
+  width: min(1050px, calc(100% - 32px));
+  min-height: 100vh;
+  margin: auto;
+  padding: 25px 0 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVIGATION */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.brand span {
+  color: var(--sky);
+}
+
+.home-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 19px;
+  border: 1px solid rgba(190,225,255,.35);
+  border-radius: 8px;
+  background: rgba(216,235,250,.08);
+  color: var(--ice);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: background .3s, transform .3s;
+}
+
+.home-button:hover {
+  background: rgba(110,168,220,.28);
+  transform: translateY(-2px);
+}
+
+.home-button:focus-visible {
+  outline: 3px solid var(--ice);
+  outline-offset: 4px;
+}
+
+/* MAIN SECTION */
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 45px 0 35px;
+  text-align: center;
+}
+
+.sector-label {
+  color: var(--sky);
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 4px;
+}
+
+h1 {
+  margin: 13px 0 5px;
+  font-size: clamp(44px, 8vw, 78px);
+  font-weight: 800;
+  letter-spacing: 9px;
+  line-height: 1.1;
+}
+
+.subtitle {
+  margin-top: 10px;
+  color: var(--ice);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* STATUS */
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 25px;
+  padding: 10px 19px;
+  border: 1px solid rgba(170,220,255,.25);
+  border-radius: 40px;
+  background: rgba(7,26,53,.38);
+  color: #cee8fb;
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.status-light {
+  width: 8px;
+  height: 8px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #87cef5;
+  box-shadow: 0 0 9px rgba(135,206,245,.5);
+  animation: statusPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes statusPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: .45;
+  }
+}
+
+/* AIRCRAFT VISUAL */
+
+.visual {
+  position: relative;
+  width: min(100%, 830px);
+  margin: 30px auto;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(7,26,53,.75),
+      rgba(30,84,132,.65)
+    );
+  box-shadow: 0 15px 45px rgba(0,0,0,.18);
+}
+
+.visual svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Subtle radar sweep */
+
+.radar-sweep {
+  transform-origin: 440px 210px;
+  animation: radarRotate 24s linear infinite;
+}
+
+@keyframes radarRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Gentle aircraft floating */
+
+.bomber {
+  transform-origin: 440px 210px;
+  filter: drop-shadow(0 12px 12px rgba(0,8,25,.4));
+  animation: aircraftFloat 6s ease-in-out infinite;
+}
+
+@keyframes aircraftFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Construction indicator */
+
+.construction-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 22px;
+  border-top: 1px solid var(--border);
+  background: rgba(5,22,44,.6);
+}
+
+.construction-label {
+  color: var(--ice);
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.construction-indicators {
+  display: flex;
+  gap: 6px;
+}
+
+.construction-indicators span {
+  display: block;
+  width: 22px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(150,205,245,.2);
+}
+
+.construction-indicators span:first-child {
+  background: #8bd2ff;
+  animation: indicatorPulse 3.5s ease-in-out infinite;
+}
+
+@keyframes indicatorPulse {
+  0%, 100% {
+    opacity: .5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* TEXT CONTENT */
+
+.construction-heading {
+  margin: 6px 0 0;
+  font-size: clamp(23px, 4vw, 35px);
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.construction-description {
+  max-width: 680px;
+  margin: 19px auto 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+/* DEVELOPMENT PHASES */
+
+.development {
+  width: min(100%, 900px);
+  margin-top: 38px;
+  text-align: left;
+}
+
+.section-heading {
+  margin-bottom: 17px;
+  color: var(--sky);
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 12px;
+}
+
+.phase-card {
+  min-width: 0;
+  padding: 20px 16px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: rgba(7,26,53,.38);
+  transition:
+    background .3s ease,
+    border-color .3s ease,
+    transform .3s ease;
+}
+
+.phase-card:hover {
+  transform: translateY(-3px);
+  background: rgba(31,82,126,.46);
+  border-color: rgba(170,220,255,.5);
+}
+
+.phase-number {
+  color: var(--sky);
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+.phase-title {
+  margin: 12px 0 9px;
+  color: white;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.phase-description {
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.phase-status {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 5px 8px;
+  border: 1px solid rgba(150,210,250,.2);
+  border-radius: 4px;
+  color: #b9dcf5;
+  font-family: Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+/* END NOTE */
+
+.final-message {
+  max-width: 640px;
+  margin: 31px auto 0;
+  color: #a9cce5;
+  font-size: 12px;
+  line-height: 1.8;
+  letter-spacing: .3px;
+  text-align: center;
+}
+
+/* FOOTER */
+
+footer {
+  padding: 21px 0 0;
+  border-top: 1px solid rgba(180,220,255,.14);
+  color: #8cb8dc;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+/* TABLET */
+
+@media (max-width: 800px) {
+  .phase-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 560px) {
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .home-button {
+    padding: 10px 13px;
+    font-size: 11px;
+  }
+
+  .hero {
+    padding: 40px 0 35px;
+  }
+
+  h1 {
+    font-size: 46px;
+    letter-spacing: 5px;
+  }
+
+  .sector-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .status {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  .visual {
+    margin: 26px auto;
+    border-radius: 10px;
+  }
+
+  .construction-bar {
+    padding: 12px;
+  }
+
+  .construction-label {
+    font-size: 9px;
+  }
+
+  .construction-indicators span {
+    width: 13px;
+  }
+
+  .construction-heading {
+    font-size: 23px;
+  }
+
+  .construction-description {
+    font-size: 12px;
+  }
+
+  .phase-grid {
+    gap: 9px;
+  }
+
+  .phase-card {
+    padding: 16px 12px;
+  }
+
+  .phase-title {
+    font-size: 12px;
+  }
+
+  .phase-description {
+    font-size: 10px;
+  }
+
+  .final-message {
+    font-size: 11px;
+  }
+}
+
+/* ACCESSIBILITY */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- NAVIGATION -->
+
+  <nav class="navbar" aria-label="Main navigation">
+
+    <div class="brand">
+      UC <span>PAF</span> ROTC
+    </div>
+
+    <a
+      class="home-button"
+      href="https://ucpafrotc.github.io/"
+    >
+      <span aria-hidden="true">&#8962;</span>
+      HOME
+    </a>
+
+  </nav>
+
+  <main class="hero">
+
+    <div class="sector-label">
+      SECTOR 02 // STRATEGIC OPERATIONS
+    </div>
+
+    <h1>ROMEO</h1>
+
+    <div class="subtitle">
+      Strategic Bomber • Systems Development
+    </div>
+
+    <!-- STATUS INDICATOR -->
+
+    <div class="status" role="status">
+
+      <span
+        class="status-light"
+        aria-hidden="true"
+      ></span>
+
+      PORTAL UNDER CONSTRUCTION
+
+    </div>
+
+    <!-- STRATEGIC BOMBER ILLUSTRATION -->
+
+    <div class="visual">
+
+      <svg
+        viewBox="0 0 880 420"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-labelledby="visualTitle visualDesc"
+      >
+
+        <title id="visualTitle">
+          Strategic Bomber Technical Display
+        </title>
+
+        <desc id="visualDesc">
+          A flying-wing strategic bomber displayed
+          against a blue technical radar background.
+        </desc>
+
+        <defs>
+
+          <linearGradient
+            id="aircraftMetal"
+            x1="0" y1="0"
+            x2="1" y2="0"
+          >
+            <stop offset="0%" stop-color="#416f98"/>
+            <stop offset="50%" stop-color="#d8ebfa"/>
+            <stop offset="100%" stop-color="#416f98"/>
+          </linearGradient>
+
+          <linearGradient
+            id="radarGradient"
+            x1="0" y1="0"
+            x2="1" y2="1"
+          >
+            <stop
+              offset="0%"
+              stop-color="#9dd8ff"
+              stop-opacity=".2"
+            />
+            <stop
+              offset="100%"
+              stop-color="#9dd8ff"
+              stop-opacity="0"
+            />
+          </linearGradient>
+
+          <radialGradient id="centralGlow">
+            <stop
+              offset="0%"
+              stop-color="#76c5f5"
+              stop-opacity=".2"
+            />
+            <stop
+              offset="100%"
+              stop-color="#76c5f5"
+              stop-opacity="0"
+            />
+          </radialGradient>
+
+        </defs>
+
+        <!-- ATMOSPHERIC GLOW -->
+
+        <ellipse
+          cx="440"
+          cy="210"
+          rx="370"
+          ry="200"
+          fill="url(#centralGlow)"
+        />
+
+        <!-- TECHNICAL GRID -->
+
+        <g
+          fill="none"
+          stroke="#a5d6f7"
+          stroke-width="1.3"
+          opacity=".18"
+        >
+
+          <circle cx="440" cy="210" r="60"/>
+          <circle cx="440" cy="210" r="115"/>
+          <circle cx="440" cy="210" r="170"/>
+          <circle cx="440" cy="210" r="225"/>
+          <circle cx="440" cy="210" r="280"/>
+
+          <path d="M0 210 H880"/>
+          <path d="M440 0 V420"/>
+
+        </g>
+
+        <!-- LIGHT RADAR SWEEP -->
+
+        <g class="radar-sweep">
+
+          <path
+            d="
+              M440 210
+              L440 5
+              A205 205 0 0 1 585 65
+              Z"
+            fill="url(#radarGradient)"
+          />
+
+        </g>
+
+        <!-- HUD TEXT -->
+
+        <g
+          font-family="monospace"
+          fill="#aad9f7"
+          font-size="12"
+          letter-spacing="2"
+          opacity=".85"
+        >
+
+          <text x="28" y="37">
+            RMO // STRATEGIC SYSTEM
+          </text>
+
+          <text x="690" y="37">
+            BUILD MODE
+          </text>
+
+          <text x="28" y="385">
+            INTERFACE DEVELOPMENT
+          </text>
+
+          <text x="680" y="385">
+            SYSTEM OFFLINE
+          </text>
+
+        </g>
+
+        <!-- TECHNICAL FRAME CORNERS -->
+
+        <g
+          fill="none"
+          stroke="#9dd5f6"
+          stroke-width="2"
+          opacity=".55"
+        >
+
+          <path d="M25 105 V70 H65"/>
+          <path d="M815 70 H855 V105"/>
+          <path d="M25 315 V350 H65"/>
+          <path d="M815 350 H855 V315"/>
+
+        </g>
+
+        <!-- STRATEGIC BOMBER -->
+
+        <g class="bomber">
+
+          <g transform="
+            translate(440 210)
+            scale(2.5)
+            translate(-100 -65)
+          ">
+
+            <!-- FLYING-WING AIRFRAME -->
+
+            <path
+              d="
+                M100 12
+                L113 37
+                L184 76
+                L193 94
+                L163 88
+                L149 103
+                L127 95
+                L114 115
+                L100 108
+                L86 115
+                L73 95
+                L51 103
+                L37 88
+                L7 94
+                L16 76
+                L87 37 Z"
+              fill="url(#aircraftMetal)"
+              stroke="#e6f5ff"
+              stroke-width="1.4"
+              stroke-linejoin="round"
+            />
+
+            <!-- LEFT WING -->
+
+            <path
+              d="
+                M87 37
+                L16 76
+                L37 88
+                L73 95
+                L95 57 Z"
+              fill="#719fc6"
+              stroke="#d2ecff"
+              stroke-width="1"
+            />
+
+            <!-- RIGHT WING -->
+
+            <path
+              d="
+                M113 37
+                L184 76
+                L163 88
+                L127 95
+                L105 57 Z"
+              fill="#719fc6"
+              stroke="#d2ecff"
+              stroke-width="1"
+            />
+
+            <!-- COCKPIT -->
+
+            <path
+              d="
+                M100 35
+                C94 41 94 53 96 61
+                Q100 66 104 61
+                C106 53 106 41 100 35 Z"
+              fill="#102f50"
+              stroke="#a6e0ff"
+              stroke-width="1.5"
+            />
+
+            <!-- AFT SECTION -->
+
+            <path
+              d="
+                M89 95
+                L100 108
+                L111 95
+                L100 98 Z"
+              fill="#315c81"
+              stroke="#b7dcf4"
+              stroke-width="1"
+            />
+
+            <!-- WING PANEL LINES -->
+
+            <path
+              d="M39 83 L86 56"
+              fill="none"
+              stroke="#48779c"
+              stroke-width="1.3"
+            />
+
+            <path
+              d="M161 83 L114 56"
+              fill="none"
+              stroke="#48779c"
+              stroke-width="1.3"
+            />
+
+          </g>
+
+        </g>
+
+        <!-- BLUEPRINT ANNOTATIONS -->
+
+        <g
+          stroke="#88c4ec"
+          stroke-width="1"
+          opacity=".6"
+          fill="none"
+        >
+
+          <path d="M195 210 L130 275 H68"/>
+          <circle cx="195" cy="210" r="3" fill="#88c4ec"/>
+
+          <path d="M685 210 L750 275 H812"/>
+          <circle cx="685" cy="210" r="3" fill="#88c4ec"/>
+
+        </g>
+
+        <g
+          font-family="monospace"
+          font-size="11"
+          fill="#b5dff7"
+          letter-spacing="1"
+          opacity=".8"
+        >
+
+          <text x="68" y="291">
+            AIRFRAME
+          </text>
+
+          <text x="740" y="291">
+            SYSTEM
+          </text>
+
+        </g>
+
+      </svg>
+
+      <!-- CONSTRUCTION STATUS BAR -->
+
+      <div class="construction-bar">
+
+        <span class="construction-label">
+          DEVELOPMENT SEQUENCE
+        </span>
+
+        <div
+          class="construction-indicators"
+          aria-hidden="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- UNDER CONSTRUCTION MESSAGE -->
+
+    <h2 class="construction-heading">
+      Systems Being Assembled
+    </h2>
+
+    <p class="construction-description">
+      The ROMEO Strategic Operations portal is currently
+      under development. Like the preparation of a strategic
+      aircraft for deployment, this digital platform
+      requires careful planning, systems integration,
+      operational checks, and final validation before
+      it can be made available for use.
+    </p>
+
+    <!-- DEVELOPMENT PHASES -->
+
+    <section
+      class="development"
+      aria-labelledby="developmentTitle"
+    >
+
+      <h3
+        id="developmentTitle"
+        class="section-heading"
+      >
+        PORTAL DEVELOPMENT SEQUENCE
+      </h3>
+
+      <div class="phase-grid">
+
+        <!-- PHASE 1 -->
+
+        <article class="phase-card">
+
+          <div class="phase-number">
+            PHASE 01
+          </div>
+
+          <h4 class="phase-title">
+            Airframe Design
+          </h4>
+
+          <p class="phase-description">
+            Establishing the page structure,
+            visual interface, navigation layout,
+            and responsive design.
+          </p>
+
+          <span class="phase-status">
+            DEVELOPMENT STAGE
+          </span>
+
+        </article>
+
+        <!-- PHASE 2 -->
+
+        <article class="phase-card">
+
+          <div class="phase-number">
+            PHASE 02
+          </div>
+
+          <h4 class="phase-title">
+            Systems Integration
+          </h4>
+
+          <p class="phase-description">
+            Preparing the required digital
+            resources, content sections,
+            and supporting links.
+          </p>
+
+          <span class="phase-status">
+            PLANNED
+          </span>
+
+        </article>
+
+        <!-- PHASE 3 -->
+
+        <article class="phase-card">
+
+          <div class="phase-number">
+            PHASE 03
+          </div>
+
+          <h4 class="phase-title">
+            Preflight Inspection
+          </h4>
+
+          <p class="phase-description">
+            Checking navigation, screen
+            compatibility, accessibility,
+            and system functionality.
+          </p>
+
+          <span class="phase-status">
+            PLANNED
+          </span>
+
+        </article>
+
+        <!-- PHASE 4 -->
+
+        <article class="phase-card">
+
+          <div class="phase-number">
+            PHASE 04
+          </div>
+
+          <h4 class="phase-title">
+            Operational Deployment
+          </h4>
+
+          <p class="phase-description">
+            Performing final review before
+            making the completed portal
+            available to its intended users.
+          </p>
+
+          <span class="phase-status">
+            PENDING
+          </span>
+
+        </article>
+
+      </div>
+
+    </section>
+
+    <!-- FINAL MESSAGE -->
+
+    <p class="final-message">
+      This sector is not yet operational. Please return
+      to the main UC PAF ROTC portal to access the
+      currently available flight sectors.
+    </p>
+
+  </main>
+
+  <footer>
+    UC PAF ROTC // ROMEO // STRATEGIC OPERATIONS
+  </footer>
+
+</div>
+
+</body>
+</html>

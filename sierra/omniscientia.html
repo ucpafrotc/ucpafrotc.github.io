@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071a35">
+
+<title>UC PAF ROTC</title>
+
+<style>
+:root {
+  --navy: #071a35;
+  --deep: #103961;
+  --blue: #265c91;
+  --sky: #79b6e7;
+  --ice: #d8ebfa;
+  --white: #ffffff;
+  --amber: #ffcd76;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--white);
+
+  /* Shared QUEBEC / SIERRA background */
+  background:
+    radial-gradient(
+      ellipse at 50% 20%,
+      #265c91 0%,
+      #103961 40%,
+      #071a35 100%
+    );
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      rgba(170,220,255,.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(170,220,255,.045) 1px,
+      transparent 1px
+    );
+  background-size: 38px 38px;
+}
+
+/* PAGE */
+
+.container {
+  position: relative;
+  width: min(1050px, calc(100% - 32px));
+  min-height: 100vh;
+  margin: auto;
+  padding: 25px 0 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVIGATION */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.brand span {
+  color: var(--sky);
+}
+
+.home-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 19px;
+  border: 1px solid rgba(190,225,255,.35);
+  border-radius: 8px;
+  background: rgba(216,235,250,.08);
+  color: var(--ice);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: background .3s, transform .3s;
+}
+
+.home-button:hover {
+  background: rgba(110,168,220,.28);
+  transform: translateY(-2px);
+}
+
+.home-button:focus-visible,
+.unit-card:focus-visible {
+  outline: 3px solid var(--ice);
+  outline-offset: 4px;
+}
+
+/* HEADER */
+
+.hero {
+  text-align: center;
+  padding: 45px 0 25px;
+}
+
+.sector-label {
+  color: var(--sky);
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 4px;
+}
+
+h1 {
+  margin: 12px 0 8px;
+  font-size: clamp(32px, 6vw, 58px);
+  font-weight: 800;
+  letter-spacing: 5px;
+}
+
+.subtitle {
+  color: var(--ice);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.description {
+  max-width: 620px;
+  margin: 17px auto 0;
+  color: #bed9ed;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+/* MILITARY TRANSPORT BANNER */
+
+.transport-banner {
+  position: relative;
+  width: 100%;
+  height: 155px;
+  margin: 0 auto 25px;
+  overflow: hidden;
+  border: 1px solid rgba(170,220,255,.22);
+  border-radius: 12px;
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(100,170,225,.2),
+      rgba(7,26,53,.45) 70%
+    );
+}
+
+.transport-banner::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border: 1px solid rgba(180,225,255,.2);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 0 35px rgba(180,225,255,.03),
+    0 0 0 36px rgba(180,225,255,.12),
+    0 0 0 70px rgba(180,225,255,.02),
+    0 0 0 71px rgba(180,225,255,.08);
+}
+
+.transport-banner svg {
+  position: relative;
+  display: block;
+  height: 100%;
+  max-width: 100%;
+  width: 440px;
+  margin: auto;
+  filter: drop-shadow(0 8px 8px rgba(0,0,0,.45));
+}
+
+/* PRIVACY NOTICE */
+
+.privacy-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 28px;
+  padding: 17px 19px;
+  border: 1px solid rgba(255,205,118,.38);
+  border-left: 4px solid var(--amber);
+  border-radius: 9px;
+  background: rgba(36,41,54,.5);
+}
+
+.warning-icon {
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  color: var(--amber);
+}
+
+.warning-text h2 {
+  margin: 0 0 6px;
+  color: var(--amber);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.warning-text p {
+  margin: 0;
+  color: #e0e9f2;
+  font-size: 12px;
+  line-height: 1.75;
+}
+
+.warning-text strong {
+  color: white;
+}
+
+/* DIRECTORY */
+
+.directory-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.directory-label h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.directory-label span {
+  color: var(--sky);
+  font-family: Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+/* 12-CARD GRID */
+
+.unit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+}
+
+/* DIRECTORY CARDS */
+
+.unit-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 170px;
+  gap: 12px;
+  padding: 20px 10px;
+  overflow: hidden;
+  border: 1px solid rgba(170,220,255,.28);
+  border-radius: 12px;
+  background:
+    linear-gradient(
+      145deg,
+      #194875,
+      #092342
+    );
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 8px 25px rgba(0,0,0,.18);
+  transition:
+    transform .3s ease,
+    border-color .3s ease,
+    background .3s ease,
+    box-shadow .3s ease;
+}
+
+.unit-card::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border: 1px solid rgba(170,220,255,.13);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 25px rgba(170,220,255,.025),
+    0 0 0 26px rgba(170,220,255,.07);
+  pointer-events: none;
+}
+
+.unit-card:hover {
+  transform: translateY(-5px);
+  border-color: #b9e1ff;
+  background:
+    linear-gradient(
+      145deg,
+      #286ca4,
+      #103961
+    );
+  box-shadow: 0 15px 40px rgba(38,120,210,.28);
+}
+
+/* FOLDER SYMBOL */
+
+.folder-icon {
+  position: relative;
+  z-index: 1;
+  width: 45px;
+  height: 45px;
+  fill: none;
+  stroke: #b7dff8;
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform .3s ease;
+}
+
+.unit-card:hover .folder-icon {
+  transform: translateY(-4px) scale(1.1);
+}
+
+/* S1, S2, ... S12 */
+
+.unit-name {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(22px, 3vw, 31px);
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.unit-description {
+  position: relative;
+  z-index: 1;
+  color: #a8cde9;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.3px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.unit-card:hover .unit-description {
+  color: white;
+}
+
+/* INSTRUCTIONS */
+
+.instructions {
+  margin-top: 28px;
+  text-align: center;
+  color: #bdd9ed;
+  font-size: 11px;
+  letter-spacing: 1.4px;
+  line-height: 1.8;
+}
+
+/* FOOTER */
+
+footer {
+  margin-top: auto;
+  padding-top: 28px;
+  color: #8cb8dc;
+  text-align: center;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+/* TABLETS */
+
+@media (max-width: 800px) {
+  .unit-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 560px) {
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .home-button {
+    padding: 10px 13px;
+    font-size: 11px;
+  }
+
+  .hero {
+    padding: 35px 0 20px;
+  }
+
+  h1 {
+    font-size: 33px;
+    letter-spacing: 3px;
+  }
+
+  .sector-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .description {
+    font-size: 12px;
+  }
+
+  .transport-banner {
+    height: 120px;
+  }
+
+  .privacy-warning {
+    padding: 13px;
+    gap: 10px;
+  }
+
+  .warning-icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  .warning-text h2 {
+    font-size: 11px;
+  }
+
+  .warning-text p {
+    font-size: 11px;
+  }
+
+  .directory-label h2 {
+    font-size: 12px;
+  }
+
+  .directory-label span {
+    font-size: 10px;
+  }
+
+  .unit-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .unit-card {
+    min-height: 140px;
+    padding: 16px 8px;
+    gap: 8px;
+  }
+
+  .folder-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .unit-name {
+    font-size: 24px;
+  }
+
+  .unit-description {
+    font-size: 9px;
+  }
+
+  footer {
+    font-size: 9px;
+  }
+}
+
+/* REDUCED MOTION */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- REUSABLE FOLDER ICON -->
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="0"
+  height="0"
+  aria-hidden="true"
+  style="position:absolute"
+>
+  <defs>
+    <symbol id="folderSymbol" viewBox="0 0 48 48">
+      <path d="
+        M5 13
+        V11
+        A4 4 0 0 1 9 7
+        H20
+        L26 13
+        H39
+        A4 4 0 0 1 43 17
+        V36
+        A4 4 0 0 1 39 40
+        H9
+        A4 4 0 0 1 5 36
+        Z
+      "/>
+      <path d="M5 18 H43"/>
+      <path d="M24 24 V34"/>
+      <path d="M19 29 L24 34 L29 29"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="container">
+
+  <!-- NAVIGATION -->
+
+  <nav class="navbar" aria-label="Main navigation">
+
+    <div class="brand">
+      UC <span>PAF</span> ROTC
+    </div>
+
+    <a
+      class="home-button"
+      href="https://ucpafrotc.github.io/"
+    >
+      <span aria-hidden="true">&#8962;</span>
+      HOME
+    </a>
+
+  </nav>
+
+  <main>
+
+    <!-- HEADER -->
+
+    <header class="hero">
+
+      <div class="sector-label">
+        SECTOR 03 // DIGITAL CARGO OPERATIONS
+      </div>
+
+      <h1>SIERRA</h1>
+
+      <div class="subtitle">
+        Military Transport • File Deployment
+      </div>
+
+      <p class="description">
+        Select your designated unit to access its assigned
+        digital file repository. All personnel must observe
+        applicable information security and data privacy
+        requirements.
+      </p>
+
+    </header>
+
+    <!-- TRANSPORT AIRCRAFT -->
+
+    <div class="transport-banner">
+
+      <svg
+        viewBox="0 0 440 155"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Military transport aircraft viewed from above"
+      >
+
+        <defs>
+          <linearGradient
+            id="metal"
+            x1="0" y1="0"
+            x2="1" y2="0"
+          >
+            <stop offset="0%" stop-color="#497ba3"/>
+            <stop offset="50%" stop-color="#d8ebfa"/>
+            <stop offset="100%" stop-color="#497ba3"/>
+          </linearGradient>
+        </defs>
+
+        <g
+          transform="
+            translate(220 78)
+            scale(1.12)
+            translate(-100 -65)
+          "
+        >
+
+          <!-- FUSELAGE -->
+
+          <path
+            d="
+              M100 5
+              C92 9 91 20 91 34
+              L90 60
+              L8 82
+              L8 93
+              L90 78
+              L92 108
+              L66 119
+              L74 126
+              L100 118
+              L126 126
+              L134 119
+              L108 108
+              L110 78
+              L192 93
+              L192 82
+              L110 60
+              L109 34
+              C109 20 108 9 100 5 Z"
+            fill="url(#metal)"
+            stroke="#e6f5ff"
+            stroke-width="1.5"
+          />
+
+          <!-- WINGS -->
+
+          <path
+            d="M90 60 L8 82 L8 89 L91 75 Z"
+            fill="#709fc7"
+            stroke="#d2e8f8"
+          />
+
+          <path
+            d="M110 60 L192 82 L192 89 L109 75 Z"
+            fill="#709fc7"
+            stroke="#d2e8f8"
+          />
+
+          <!-- FOUR ENGINES -->
+
+          <g
+            fill="#315e86"
+            stroke="#c3e3f8"
+          >
+            <rect x="39" y="79"
+              width="10" height="24" rx="4"/>
+            <rect x="69" y="70"
+              width="10" height="25" rx="4"/>
+            <rect x="121" y="70"
+              width="10" height="25" rx="4"/>
+            <rect x="151" y="79"
+              width="10" height="24" rx="4"/>
+          </g>
+
+          <!-- COCKPIT -->
+
+          <path
+            d="
+              M100 14
+              C94 18 94 27 96 32
+              L104 32
+              C106 27 106 18 100 14 Z"
+            fill="#0b2c4c"
+            stroke="#a6e0ff"
+            stroke-width="1.5"
+          />
+
+          <path
+            d="M100 40 V112"
+            fill="none"
+            stroke="#547da0"
+            stroke-width="1.5"
+          />
+
+        </g>
+
+      </svg>
+
+    </div>
+
+    <!-- DATA PRIVACY WARNING -->
+
+    <section
+      class="privacy-warning"
+      aria-label="Data privacy notice"
+    >
+
+      <svg
+        class="warning-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 3 L22 20 H2 Z"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M12 9 V14"
+          stroke-linecap="round"
+        />
+        <circle
+          cx="12" cy="17"
+          r="1"
+          fill="currentColor"
+          stroke="none"
+        />
+      </svg>
+
+      <div class="warning-text">
+
+        <h2>
+          Data Privacy Notice — Authorized Personnel Only
+        </h2>
+
+        <p>
+          <strong>
+            Do not open any folder unless you are
+            authorized to access its contents.
+          </strong>
+          The linked repositories may contain personal or
+          sensitive personal information subject to
+          Republic Act No. 10173, the Data Privacy Act
+          of 2012. Access, processing, sharing, and
+          disclosure must comply with applicable law
+          and organizational policies.
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- DIRECTORY HEADER -->
+
+    <div class="directory-label">
+      <h2>SELECT DESIGNATED UNIT</h2>
+      <span>12 REPOSITORIES</span>
+    </div>
+
+    <!-- ALL LINKS OPEN GOOGLE DRIVE IN NEW TABS -->
+
+    <nav
+      class="unit-grid"
+      aria-label="Sierra unit directories"
+    >
+
+      <!-- SIERRA 001 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/11Db521Qxi50YjHG1egNFc9zO3eSroIH3?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S1 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S1</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 002 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/13EOv3LDOjBLIrkLYaQsgu5sjmY6ebcz9?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S2 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S2</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 003 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1yMX4cZCI5z3HJ8Dgm5RJ_JR-2_M_zZJ7?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S3 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S3</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 004 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1wYmf2wDnTtD7yZSjn1XI-8tLkKOxO_4l?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S4 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S4</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 005 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1YOd-4Fyaikm15dHjENM82cFiqZ1IJdtH?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S5 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S5</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 006 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1yzZ2uzHkkXaQYeBvSLo7oeYGl4P93AAC?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S6 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S6</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 007 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1kqxZbfvayQheVGL7AIVqpqh4KQ0oTP5p?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S7 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S7</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 008 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1ryteb1VVHUV6wfU2Re5sMqkFWd9DNcgY?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S8 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S8</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 009 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1t8mk4lTJj1oKnLtbCnhw0cDXnC3_Qesw?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S9 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S9</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 010 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1nkD6TLTZyMq0Ur5HSFaw1na_swR3JHZo?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S10 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S10</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 011 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1C8jrMkTcpUTekC2Qt8_ENQRaRKeB9nck?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S11 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S11</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+      <!-- SIERRA 012 -->
+
+      <a
+        class="unit-card"
+        href="https://drive.google.com/drive/folders/1p393U3uDHYhGZQIzUPSupzA7tZT-Iaq0?usp=sharing"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Open S12 Google Drive folder"
+      >
+        <svg class="folder-icon" aria-hidden="true">
+          <use href="#folderSymbol"/>
+        </svg>
+        <span class="unit-name">S12</span>
+        <span class="unit-description">Open Repository</span>
+      </a>
+
+    </nav>
+
+    <p class="instructions">
+      Select your authorized unit to open its
+      designated Google Drive repository.
+    </p>
+
+  </main>
+
+  <footer>
+    UC PAF ROTC // SIERRA // DIGITAL CARGO OPERATIONS
+  </footer>
+
+</div>
+
+</body>
+</html>

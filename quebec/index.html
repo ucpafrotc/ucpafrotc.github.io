@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#071a35">
+
+<title>UC PAF ROTC</title>
+
+<style>
+:root {
+  --navy: #071a35;
+  --deep: #103961;
+  --blue: #265c91;
+  --sky: #79b6e7;
+  --ice: #d8ebfa;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--white);
+
+  /* Shared QUEBEC / SIERRA background */
+  background:
+    radial-gradient(
+      ellipse at 50% 20%,
+      #265c91 0%,
+      #103961 40%,
+      #071a35 100%
+    );
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(
+      rgba(170,220,255,.045) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(170,220,255,.045) 1px,
+      transparent 1px
+    );
+  background-size: 38px 38px;
+}
+
+/* MAIN LAYOUT */
+
+.container {
+  width: min(1050px, calc(100% - 32px));
+  min-height: 100vh;
+  margin: auto;
+  padding: 25px 0 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* NAVIGATION */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.brand {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.brand span {
+  color: var(--sky);
+}
+
+.home-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 19px;
+  border: 1px solid rgba(190,225,255,.35);
+  border-radius: 8px;
+  background: rgba(216,235,250,.08);
+  color: var(--ice);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: background .3s, transform .3s;
+}
+
+.home-button:hover {
+  background: rgba(110,168,220,.28);
+  transform: translateY(-2px);
+}
+
+/* PAGE HEADING */
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 35px 0;
+}
+
+.sector-label {
+  color: var(--sky);
+  text-align: center;
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  letter-spacing: 4px;
+}
+
+h1 {
+  margin: 12px 0 3px;
+  font-size: clamp(42px, 8vw, 78px);
+  letter-spacing: 9px;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.subtitle {
+  margin-top: 11px;
+  color: var(--ice);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.description {
+  max-width: 570px;
+  margin: 18px auto 30px;
+  color: #bed9ed;
+  font-size: 14px;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* INTERACTIVE PORTAL */
+
+.portal {
+  display: block;
+  width: min(100%, 850px);
+  overflow: hidden;
+  border: 1px solid rgba(170,220,255,.35);
+  border-radius: 17px;
+  background: rgba(7,26,53,.55);
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 15px 50px rgba(0,0,0,.25);
+  transition:
+    transform .35s ease,
+    box-shadow .35s ease,
+    border-color .35s ease;
+}
+
+.portal:hover {
+  transform: translateY(-6px);
+  border-color: #b5dfff;
+  box-shadow: 0 20px 65px rgba(46,139,225,.3);
+}
+
+.portal:focus-visible,
+.home-button:focus-visible {
+  outline: 3px solid var(--ice);
+  outline-offset: 4px;
+}
+
+/* ILLUSTRATION */
+
+.visual {
+  position: relative;
+  background:
+    linear-gradient(
+      145deg,
+      #0a274a 0%,
+      #184b79 65%,
+      #286699 100%
+    );
+}
+
+.visual svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.radar-ring {
+  fill: none;
+  stroke: #9fceef;
+  stroke-width: 1.5;
+  opacity: .2;
+}
+
+.radar-sweep {
+  transform-origin: 440px 235px;
+  animation: radarRotate 12s linear infinite;
+}
+
+@keyframes radarRotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.signal {
+  fill: none;
+  stroke: #a8e4ff;
+  stroke-width: 3;
+  stroke-dasharray: 7 12;
+  animation: signalFlow 1.5s linear infinite;
+}
+
+@keyframes signalFlow {
+  to {
+    stroke-dashoffset: -38;
+  }
+}
+
+.interceptor {
+  transform-origin: 440px 225px;
+  filter: drop-shadow(0 12px 10px rgba(0,10,30,.5));
+  transition: transform .4s ease;
+}
+
+.portal:hover .interceptor {
+  transform: translateY(-8px) scale(1.025);
+}
+
+.file-symbol {
+  transition: transform .4s ease;
+  transform-origin: 740px 235px;
+}
+
+.portal:hover .file-symbol {
+  transform: scale(1.08);
+}
+
+/* PORTAL BOTTOM */
+
+.portal-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 24px 28px;
+  border-top: 1px solid rgba(190,230,255,.2);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(7,26,53,.98),
+      rgba(28,80,126,.98)
+    );
+}
+
+.portal-title {
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.portal-description {
+  margin-top: 7px;
+  color: var(--sky);
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.portal-arrow {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgba(200,230,255,.35);
+  background: rgba(255,255,255,.1);
+  font-size: 25px;
+  transition: transform .3s, background .3s;
+}
+
+.portal:hover .portal-arrow {
+  background: #2563a6;
+  transform: translateX(5px);
+}
+
+/* INSTRUCTIONS */
+
+.instructions {
+  margin-top: 24px;
+  text-align: center;
+  color: #bfdcf1;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+footer {
+  padding: 18px 0 0;
+  border-top: 1px solid rgba(180,220,255,.14);
+  text-align: center;
+  color: #8cb8dc;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .container {
+    width: calc(100% - 24px);
+  }
+
+  .brand {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .home-button {
+    padding: 10px 13px;
+    font-size: 11px;
+  }
+
+  .hero {
+    padding: 45px 0;
+  }
+
+  h1 {
+    font-size: 43px;
+    letter-spacing: 5px;
+  }
+
+  .sector-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .description {
+    font-size: 12px;
+  }
+
+  .portal {
+    border-radius: 10px;
+  }
+
+  .portal-bottom {
+    padding: 18px;
+  }
+
+  .portal-title {
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+
+  .portal-description {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .portal-arrow {
+    width: 35px;
+    height: 35px;
+    font-size: 20px;
+  }
+
+  .instructions {
+    font-size: 10px;
+    line-height: 1.7;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- NAVIGATION -->
+
+  <nav class="navbar" aria-label="Main navigation">
+
+    <div class="brand">
+      UC <span>PAF</span> ROTC
+    </div>
+
+    <a
+      class="home-button"
+      href="https://ucpafrotc.github.io/"
+    >
+      <span aria-hidden="true">&#8962;</span>
+      HOME
+    </a>
+
+  </nav>
+
+  <main class="hero">
+
+    <div class="sector-label">
+      SECTOR 01 // FILE INTERCEPTION
+    </div>
+
+    <h1>QUEBEC</h1>
+
+    <div class="subtitle">
+      Interceptor • Digital File Exchange
+    </div>
+
+    <p class="description">
+      Establish a connection to the designated file repository.
+      Intercept the signal, acquire the documents, and complete
+      the information transfer.
+    </p>
+
+    <!-- CLICKABLE INTERCEPTOR IMAGE -->
+
+    <a
+      class="portal"
+      href="https://drive.google.com/drive/folders/1cSMTI9WYy2tepzNX8YcWJVbPp_haPUAC?usp=sharing"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Open Quebec Google Drive file repository in a new tab"
+    >
+
+      <div class="visual">
+
+        <svg
+          viewBox="0 0 880 450"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+          aria-labelledby="imageTitle imageDesc"
+        >
+
+          <title id="imageTitle">
+            Interceptor File Exchange
+          </title>
+
+          <desc id="imageDesc">
+            An interceptor aircraft shown on a blue radar
+            display, with a data transmission connecting
+            to a digital file repository.
+          </desc>
+
+          <defs>
+
+            <linearGradient id="aircraftMetal"
+              x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#467ba7"/>
+              <stop offset="50%" stop-color="#d8ebfa"/>
+              <stop offset="100%" stop-color="#467ba7"/>
+            </linearGradient>
+
+            <linearGradient id="radarBeam"
+              x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#9dd8ff"
+                stop-opacity=".25"/>
+              <stop offset="100%" stop-color="#9dd8ff"
+                stop-opacity="0"/>
+            </linearGradient>
+
+            <radialGradient id="centerGlow">
+              <stop offset="0%" stop-color="#6bb6ed"
+                stop-opacity=".26"/>
+              <stop offset="100%" stop-color="#6bb6ed"
+                stop-opacity="0"/>
+            </radialGradient>
+
+          </defs>
+
+          <!-- Radar atmosphere -->
+
+          <ellipse
+            cx="440" cy="235"
+            rx="400" ry="230"
+            fill="url(#centerGlow)"
+          />
+
+          <g class="radar-ring">
+            <circle cx="440" cy="235" r="65"/>
+            <circle cx="440" cy="235" r="125"/>
+            <circle cx="440" cy="235" r="185"/>
+            <circle cx="440" cy="235" r="245"/>
+
+            <path d="M0 235 H880"/>
+            <path d="M440 0 V450"/>
+          </g>
+
+          <!-- Rotating radar sweep -->
+
+          <g class="radar-sweep">
+            <path
+              d="M440 235 L440 20 A215 215 0 0 1
+                 592 83 Z"
+              fill="url(#radarBeam)"
+            />
+            <path
+              d="M440 235 L440 20"
+              stroke="#9bd9ff"
+              stroke-width="2"
+              opacity=".3"
+            />
+          </g>
+
+          <!-- Target detection markers -->
+
+          <g fill="none" stroke="#9ed8ff"
+             stroke-width="2" opacity=".65">
+            <path d="M95 92 h22 m-22 0 v22"/>
+            <path d="M785 92 h-22 m22 0 v22"/>
+            <path d="M95 365 h22 m-22 0 v-22"/>
+            <path d="M785 365 h-22 m22 0 v-22"/>
+          </g>
+
+          <g font-family="monospace"
+             fill="#a9d8f5"
+             letter-spacing="2"
+             font-size="12">
+            <text x="30" y="36">
+              QBC / INTERCEPTOR
+            </text>
+            <text x="650" y="36">
+              DATA LINK SYSTEM
+            </text>
+            <text x="30" y="420">
+              SIGNAL ACQUISITION
+            </text>
+            <text x="660" y="420">
+              FILE REPOSITORY
+            </text>
+          </g>
+
+          <!-- Interceptor aircraft -->
+
+          <g class="interceptor">
+
+            <g transform="translate(440 220)
+                          scale(1.65)
+                          translate(-100 -65)">
+
+              <!-- Main interceptor silhouette -->
+
+              <path
+                d="
+                  M100 5
+                  C94 12 93 30 92 57
+                  L83 69
+                  L12 104
+                  L20 113
+                  L88 98
+                  L92 118
+                  L100 113
+                  L108 118
+                  L112 98
+                  L180 113
+                  L188 104
+                  L117 69
+                  L108 57
+                  C107 30 106 12 100 5 Z"
+                fill="url(#aircraftMetal)"
+                stroke="#e6f5ff"
+                stroke-width="1.5"
+              />
+
+              <!-- Delta wings -->
+
+              <path
+                d="M92 57 L83 69 L20 108
+                   L89 91 L96 64 Z"
+                fill="#709fc7"
+                stroke="#d2e8f8"
+                stroke-width="1"
+              />
+
+              <path
+                d="M108 57 L117 69 L180 108
+                   L111 91 L104 64 Z"
+                fill="#709fc7"
+                stroke="#d2e8f8"
+                stroke-width="1"
+              />
+
+              <!-- Cockpit -->
+
+              <path
+                d="M100 26
+                   C94 33 94 45 96 56
+                   Q100 61 104 56
+                   C106 45 106 33 100 26 Z"
+                fill="#0b2c4c"
+                stroke="#a6e0ff"
+                stroke-width="1.5"
+              />
+
+              <!-- Tail stabilizers -->
+
+              <path
+                d="M91 93 L93 116
+                   L100 111 L100 92 Z"
+                fill="#315e86"
+                stroke="#c3e3f8"
+                stroke-width="1"
+              />
+
+              <path
+                d="M109 93 L107 116
+                   L100 111 L100 92 Z"
+                fill="#315e86"
+                stroke="#c3e3f8"
+                stroke-width="1"
+              />
+
+              <path d="M100 66 V100"
+                fill="none"
+                stroke="#547da0"
+                stroke-width="1.5"
+              />
+
+            </g>
+
+          </g>
+
+          <!-- Interception connection -->
+
+          <path class="signal"
+            d="M585 235 H663"
+          />
+
+          <circle cx="640" cy="235" r="6"
+            fill="#b8edff"
+          />
+
+          <!-- Digital file repository icon -->
+
+          <g class="file-symbol">
+
+            <circle
+              cx="740" cy="235" r="75"
+              fill="#0b3056"
+              stroke="#7abbe8"
+              stroke-width="2"
+            />
+
+            <circle
+              cx="740" cy="235" r="61"
+              fill="none"
+              stroke="#7abbe8"
+              stroke-width="1"
+              stroke-dasharray="4 7"
+              opacity=".65"
+            />
+
+            <!-- Folder -->
+
+            <path
+              d="M699 215
+                 V199
+                 Q699 192 706 192
+                 H729
+                 L739 202
+                 H774
+                 Q781 202 781 209
+                 V261
+                 Q781 268 774 268
+                 H706
+                 Q699 268 699 261 Z"
+              fill="#397fac"
+              stroke="#dbf2ff"
+              stroke-width="3"
+            />
+
+            <!-- Document -->
+
+            <rect
+              x="721" y="210"
+              width="39" height="48"
+              rx="3"
+              fill="#d8ebfa"
+            />
+
+            <path
+              d="M728 221 H752
+                 M728 230 H752
+                 M728 239 H745"
+              fill="none"
+              stroke="#397fac"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+
+            <!-- Transfer arrow -->
+
+            <circle
+              cx="763" cy="265" r="18"
+              fill="#77bee9"
+              stroke="#d8ebfa"
+              stroke-width="2"
+            />
+
+            <path
+              d="M755 265 H770
+                 M764 258 L771 265 L764 272"
+              fill="none"
+              stroke="#092b4c"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+          </g>
+
+        </svg>
+
+      </div>
+
+      <div class="portal-bottom">
+
+        <div>
+          <div class="portal-title">
+            ACCESS FILE REPOSITORY
+          </div>
+
+          <div class="portal-description">
+            QUEBEC DRIVE // OPEN SHARED FILES
+          </div>
+        </div>
+
+        <span class="portal-arrow" aria-hidden="true">
+          &#8594;
+        </span>
+
+      </div>
+
+    </a>
+
+    <div class="instructions">
+      Click the interceptor image to establish the file link
+    </div>
+
+  </main>
+
+  <footer>
+    UC PAF ROTC // QUEBEC // DIGITAL FILE EXCHANGE
+  </footer>
+
+</div>
+
+</body>
+</html>
