@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#040407">
+  <meta name="description" content="UC PAF ROTC Cyclops portal">
+  <title>UC PAF ROTC</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --black: #040407;
+      --blue: #c8f0ff;
+      --violet: #ab49ff;
+      --lavender: #e6baff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100svh;
+      overflow-x: hidden;
+      color: #e8e4f0;
+      font-family: "Segoe UI", Arial, sans-serif;
+
+      background:
+        radial-gradient(
+          ellipse 62% 35% at 50% 48%,
+          rgba(81, 21, 132, .22),
+          transparent 78%
+        ),
+        radial-gradient(
+          ellipse 40% 30% at 50% 95%,
+          rgba(31, 27, 68, .15),
+          transparent
+        ),
+        #040407;
+    }
+
+    /* Visible tactical grid */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+
+      background-image:
+        linear-gradient(
+          rgba(156, 151, 184, .105) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(156, 151, 184, .105) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          rgba(131, 112, 161, .036) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(131, 112, 161, .036) 1px,
+          transparent 1px
+        );
+
+      background-size:
+        48px 48px,
+        48px 48px,
+        12px 12px,
+        12px 12px;
+
+      opacity: .94;
+    }
+
+    /* Scanlines and dark vignette */
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0 5px,
+          rgba(190, 156, 240, .018) 5px 6px
+        ),
+        radial-gradient(
+          ellipse at 50% 48%,
+          transparent 18%,
+          rgba(0, 0, 0, .48) 100%
+        );
+    }
+
+    /* Main portal */
+
+    .portal {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      min-height: 100svh;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      padding: 48px 18px;
+      isolation: isolate;
+    }
+
+    /* Wide CYCLOPS heading */
+
+    .page-title {
+      position: relative;
+      margin: 0 0 clamp(54px, 7vw, 83px);
+
+      color: var(--blue);
+
+      font-family:
+        "Arial Black",
+        "Segoe UI Black",
+        "Segoe UI",
+        sans-serif;
+
+      font-size: clamp(38px, 9vw, 112px);
+      font-weight: 900;
+      font-stretch: expanded;
+      letter-spacing: .16em;
+      line-height: 1.15;
+      text-align: center;
+      white-space: nowrap;
+
+      transform: scaleX(1.08);
+
+      text-shadow:
+        0 0 5px rgba(230, 251, 255, .97),
+        0 0 18px rgba(75, 193, 255, .87),
+        0 0 42px rgba(36, 130, 255, .56),
+        0 0 82px rgba(35, 86, 215, .27);
+
+      animation: titleGlow 5s ease-in-out infinite;
+    }
+
+    .page-title::after {
+      content: "";
+      position: absolute;
+
+      left: 12%;
+      right: 12%;
+      bottom: -23px;
+      height: 2px;
+
+      border-radius: 10px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #52c9ff,
+          #e7f9ff,
+          #52c9ff,
+          transparent
+        );
+
+      box-shadow:
+        0 0 12px rgba(77, 194, 255, .9),
+        0 0 27px rgba(34, 130, 247, .45);
+    }
+
+    /* Visor assembly */
+
+    .visor-container {
+      position: relative;
+      width: min(88vw, 880px);
+      height: clamp(96px, 14vw, 145px);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Violet atmospheric bloom */
+
+    .visor-container::before {
+      content: "";
+      position: absolute;
+
+      width: 95%;
+      height: 150%;
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(97, 0, 255, .48),
+          rgba(194, 58, 255, .76),
+          rgba(112, 19, 255, .55)
+        );
+
+      filter: blur(48px);
+      opacity: .96;
+
+      animation:
+        atmosphericPulse 5.5s ease-in-out infinite;
+    }
+
+    /* Metallic exterior */
+
+    .visor {
+      position: relative;
+      width: 100%;
+      height: 74%;
+
+      padding: clamp(12px, 2vw, 19px);
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid #605a73;
+      border-radius: clamp(18px, 3vw, 29px);
+
+      background:
+        linear-gradient(
+          180deg,
+          #565467 0%,
+          #2a2736 9%,
+          #14121e 23%,
+          #08080f 48%,
+          #191522 76%,
+          #3f3a51 94%,
+          #14111e 100%
+        );
+
+      box-shadow:
+        0 25px 40px rgba(0, 0, 0, .75),
+        0 4px 8px rgba(0, 0, 0, .92),
+        inset 0 2px 2px rgba(255, 255, 255, .20),
+        inset 0 -3px 5px rgba(0, 0, 0, .9);
+    }
+
+    /* Upper metallic reflection */
+
+    .visor::before {
+      content: "";
+      position: absolute;
+
+      top: 5px;
+      left: 5%;
+      right: 5%;
+      height: 1px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(238, 219, 255, .7),
+          rgba(255, 255, 255, .14),
+          transparent
+        );
+
+      pointer-events: none;
+    }
+
+    /* Housing seam */
+
+    .visor::after {
+      content: "";
+      position: absolute;
+      inset: 5px;
+
+      border: 1px solid rgba(0, 0, 0, .7);
+      border-radius: inherit;
+
+      pointer-events: none;
+    }
+
+    /* Recessed lens */
+
+    .visor-recess {
+      position: relative;
+
+      width: 100%;
+      height: 100%;
+      padding: 5px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      border: 1px solid rgba(0, 0, 0, .9);
+      border-radius: clamp(12px, 2vw, 20px);
+
+      background:
+        linear-gradient(
+          180deg,
+          #030108,
+          #10051d 50%,
+          #200831
+        );
+
+      box-shadow:
+        inset 0 5px 8px #000,
+        inset 0 -2px 4px rgba(255, 255, 255, .08);
+    }
+
+    /* High-intensity violet lens */
+
+    .visor-light {
+      position: relative;
+
+      width: 100%;
+      height: 82%;
+      overflow: hidden;
+
+      border-radius: clamp(9px, 1.5vw, 15px);
+
+      background:
+        linear-gradient(
+          180deg,
+          #360660 0%,
+          #8012e4 12%,
+          #bf4aff 27%,
+          #e7a2ff 40%,
+          #fffaff 50%,
+          #edc3ff 57%,
+          #c44dff 73%,
+          #8210df 90%,
+          #34075e 100%
+        );
+
+      box-shadow:
+        0 0 8px #eab5ff,
+        0 0 23px rgba(192, 73, 255, 1),
+        0 0 48px rgba(174, 32, 255, .93),
+        0 0 90px rgba(131, 10, 255, .66),
+        0 0 155px rgba(121, 6, 255, .37),
+        inset 0 0 16px rgba(255, 245, 255, .75);
+
+      animation:
+        lightBreathe 5.5s ease-in-out infinite;
+    }
+
+    /* Bright central beam */
+
+    .visor-light::before {
+      content: "";
+      position: absolute;
+
+      left: 3%;
+      right: 3%;
+      top: 47%;
+
+      height: 5px;
+      border-radius: 10px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #e9b7ff 15%,
+          #fff 50%,
+          #e9b7ff 85%,
+          transparent
+        );
+
+      filter: blur(2px);
+      opacity: .98;
+    }
+
+    /* Moving reflection */
+
+    .visor-light::after {
+      content: "";
+      position: absolute;
+
+      top: -50%;
+      bottom: -50%;
+      left: -30%;
+      width: 18%;
+
+      transform: skewX(-22deg);
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, .06),
+          rgba(255, 255, 255, .35),
+          rgba(255, 255, 255, .06),
+          transparent
+        );
+
+      animation:
+        scanReflection 8s ease-in-out infinite;
+    }
+
+    /* Side hardware */
+
+    .visor-cap {
+      position: absolute;
+      z-index: -1;
+
+      top: 28%;
+      width: 4%;
+      height: 44%;
+
+      border: 1px solid #4a425a;
+      border-radius: 10px;
+
+      background:
+        linear-gradient(
+          180deg,
+          #555164,
+          #11101a 30%,
+          #1c1825 75%,
+          #3c3648
+        );
+
+      box-shadow:
+        0 5px 15px rgba(0, 0, 0, .8);
+    }
+
+    .visor-cap.left {
+      left: -2%;
+    }
+
+    .visor-cap.right {
+      right: -2%;
+    }
+
+    /* Violet reflected light */
+
+    .visor-reflection {
+      position: absolute;
+
+      top: 90%;
+      left: 12%;
+
+      width: 76%;
+      height: 23px;
+      border-radius: 50%;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(139, 18, 255, .35),
+          rgba(202, 79, 255, .58),
+          rgba(139, 18, 255, .35),
+          transparent
+        );
+
+      filter: blur(19px);
+    }
+
+    /* Rules navigation */
+
+    .action {
+      margin-top: 66px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .action-line {
+      width: 62px;
+      height: 1px;
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          #b75cff,
+          transparent
+        );
+    }
+
+    /* Text-only VIEW RULES button */
+
+    .rules-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 170px;
+      padding: 15px 28px;
+
+      border: 1px solid rgba(189, 110, 255, .39);
+      border-radius: 8px;
+
+      background: rgba(164, 64, 255, .055);
+      color: #f1e7fc;
+
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-align: center;
+      text-decoration: none;
+
+      transition:
+        color .25s ease,
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease,
+        transform .25s ease;
+    }
+
+    .rules-link:hover {
+      color: #fff;
+      background: rgba(164, 64, 255, .15);
+      border-color: rgba(218, 157, 255, .85);
+
+      box-shadow:
+        0 0 22px rgba(153, 58, 255, .28),
+        inset 0 0 15px rgba(153, 58, 255, .08);
+
+      transform: translateY(-3px);
+    }
+
+    .rules-link:focus-visible {
+      outline: 2px solid #e0b2ff;
+      outline-offset: 5px;
+    }
+
+    /* Animations */
+
+    @keyframes titleGlow {
+      0%, 100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.15);
+      }
+    }
+
+    @keyframes atmosphericPulse {
+      0%, 100% {
+        opacity: .72;
+        transform: scale(.98);
+      }
+
+      50% {
+        opacity: 1;
+        transform: scale(1.04);
+      }
+    }
+
+    @keyframes lightBreathe {
+      0%, 100% {
+        filter: brightness(1);
+      }
+
+      50% {
+        filter: brightness(1.22);
+      }
+    }
+
+    @keyframes scanReflection {
+      0%, 14% {
+        left: -30%;
+      }
+
+      48%, 100% {
+        left: 115%;
+      }
+    }
+
+    /* Mobile */
+
+    @media (max-width: 600px) {
+      .page-title {
+        font-size: clamp(37px, 9.5vw, 61px);
+        letter-spacing: .12em;
+        margin-bottom: 62px;
+        transform: scaleX(1.03);
+      }
+
+      .visor-container {
+        width: 92vw;
+        height: 95px;
+      }
+
+      .visor {
+        height: 68%;
+        padding: 10px;
+        border-radius: 17px;
+      }
+
+      .visor-recess {
+        border-radius: 12px;
+        padding: 4px;
+      }
+
+      .visor-light {
+        border-radius: 8px;
+      }
+
+      .action {
+        margin-top: 50px;
+      }
+
+      .rules-link {
+        padding: 14px 23px;
+        font-size: 11px;
+      }
+    }
+
+    /* Reduced motion */
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="portal">
+
+    <!-- Wide CYCLOPS heading -->
+    <h1 class="page-title">CYCLOPS</h1>
+
+    <!-- Violet visor -->
+    <div
+      class="visor-container"
+      role="img"
+      aria-label="Metallic Cyclops visor emitting intense violet light"
+    >
+      <div class="visor-cap left"></div>
+      <div class="visor-cap right"></div>
+
+      <div class="visor">
+        <div class="visor-recess">
+          <div class="visor-light"></div>
+        </div>
+      </div>
+
+      <div class="visor-reflection"></div>
+    </div>
+
+    <!-- Rules navigation -->
+    <nav class="action" aria-label="Rules navigation">
+      <div class="action-line" aria-hidden="true"></div>
+
+      <a
+        class="rules-link"
+        href="sierrados/rules.html"
+      >
+        VIEW RULES
+      </a>
+    </nav>
+
+  </main>
+</body>
+</html>

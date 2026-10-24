@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#030406">
+  <meta name="description" content="CYCLOPS Rules of Engagement — UC PAF ROTC">
+  <title>UC PAF ROTC</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #030406;
+      --surface: rgba(10, 12, 19, .82);
+      --line: rgba(176, 195, 223, .17);
+      --text: #eef1f8;
+      --muted: #a3aabb;
+      --blue: #b7eaff;
+      --violet: #bb85ff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background: var(--background);
+      font-family: "Segoe UI", Arial, sans-serif;
+      overflow-x: hidden;
+      isolation: isolate;
+    }
+
+    /* Black tactical grid */
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+
+      background:
+        linear-gradient(
+          rgba(156, 165, 196, .095) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(156, 165, 196, .095) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          rgba(156, 165, 196, .028) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(156, 165, 196, .028) 1px,
+          transparent 1px
+        ),
+        radial-gradient(
+          ellipse at 80% 13%,
+          rgba(91, 39, 154, .18),
+          transparent 34%
+        ),
+        #030406;
+
+      background-size:
+        48px 48px,
+        48px 48px,
+        12px 12px,
+        12px 12px,
+        auto,
+        auto;
+    }
+
+    /* Subtle screen scanlines */
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0 6px,
+          rgba(200, 205, 235, .014) 6px 7px
+        ),
+        radial-gradient(
+          ellipse at 50% 40%,
+          transparent 30%,
+          rgba(0, 0, 0, .55) 100%
+        );
+    }
+
+    /* Animated radar backdrop */
+
+    .radar {
+      position: fixed;
+      top: -150px;
+      right: -170px;
+      z-index: 0;
+
+      width: min(85vw, 740px);
+      aspect-ratio: 1;
+
+      border: 1px solid rgba(155, 113, 231, .15);
+      border-radius: 50%;
+
+      opacity: .52;
+      pointer-events: none;
+      overflow: hidden;
+
+      background:
+        radial-gradient(
+          circle,
+          transparent 0 24.8%,
+          rgba(171, 117, 255, .13) 25%,
+          transparent 25.2%,
+          transparent 49.8%,
+          rgba(171, 117, 255, .13) 50%,
+          transparent 50.2%,
+          transparent 74.8%,
+          rgba(171, 117, 255, .13) 75%,
+          transparent 75.2%
+        ),
+        linear-gradient(
+          90deg,
+          transparent 49.9%,
+          rgba(171, 117, 255, .13) 50%,
+          transparent 50.1%
+        ),
+        linear-gradient(
+          transparent 49.9%,
+          rgba(171, 117, 255, .13) 50%,
+          transparent 50.1%
+        );
+
+      box-shadow:
+        inset 0 0 65px rgba(129, 55, 224, .035);
+    }
+
+    /* Rotating radar sweep */
+
+    .radar::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+
+      background:
+        conic-gradient(
+          from 0deg,
+          transparent 0deg,
+          transparent 284deg,
+          rgba(123, 51, 215, .025) 298deg,
+          rgba(166, 91, 255, .28) 347deg,
+          rgba(207, 162, 255, .62) 360deg
+        );
+
+      animation: radarSweep 9s linear infinite;
+    }
+
+    .radar::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+
+      width: 7px;
+      height: 7px;
+
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+
+      background: #cbafff;
+
+      box-shadow:
+        0 0 20px rgba(185, 117, 255, .8);
+    }
+
+    @keyframes radarSweep {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Content */
+
+    .container {
+      position: relative;
+      z-index: 1;
+
+      width: min(920px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 26px 0 54px;
+    }
+
+    .brand {
+      color: #a1a8b8;
+      font: 700 11px/1.5 Consolas, "Courier New", monospace;
+      letter-spacing: .24em;
+    }
+
+    .brand strong {
+      color: var(--blue);
+    }
+
+    /* Header */
+
+    .hero {
+      padding: 65px 0 42px;
+      text-align: center;
+    }
+
+    .eyebrow,
+    .section-label,
+    .rule-number,
+    .final-label {
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .22em;
+    }
+
+    .eyebrow {
+      color: var(--violet);
+    }
+
+    .hero h1 {
+      margin: 19px 0 10px;
+
+      color: var(--blue);
+
+      font-family:
+        "Arial Black",
+        "Segoe UI Black",
+        "Segoe UI",
+        sans-serif;
+
+      font-size: clamp(39px, 8.4vw, 86px);
+      font-weight: 900;
+      letter-spacing: .13em;
+      line-height: 1.15;
+
+      text-shadow:
+        0 0 16px rgba(87, 196, 255, .37);
+    }
+
+    .subtitle {
+      margin: 0;
+
+      color: #ced3e0;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .27em;
+
+      text-transform: uppercase;
+    }
+
+    /* Operational motto */
+
+    .motto {
+      margin: 0 auto 29px;
+      padding: 25px 26px;
+      max-width: 780px;
+
+      border-top:
+        1px solid rgba(181, 133, 255, .4);
+
+      border-bottom:
+        1px solid var(--line);
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(45, 25, 74, .23),
+          transparent
+        );
+
+      color: #e9e7f1;
+      text-align: center;
+
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(18px, 2.7vw, 24px);
+      font-style: italic;
+      line-height: 1.65;
+    }
+
+    .motto strong {
+      color: #d3a6ff;
+    }
+
+    /* Introduction */
+
+    .intro {
+      max-width: 730px;
+      margin: 0 auto 56px;
+      text-align: center;
+    }
+
+    .section-label {
+      color: var(--violet);
+    }
+
+    .intro p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    /* Operational directives */
+
+    .section-heading {
+      margin: 0 0 13px;
+
+      color: #dce8fa;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .18em;
+    }
+
+    .rules-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: 38px;
+    }
+
+    .rule {
+      padding: 22px 0 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .rule-number {
+      color: var(--violet);
+    }
+
+    .rule h3 {
+      margin: 10px 0;
+
+      color: #f0f2fb;
+      font-size: 15px;
+      line-height: 1.5;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: .045em;
+    }
+
+    .rule p {
+      margin: 0;
+
+      color: #afb6c6;
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+    .rule.safety .rule-number {
+      color: #eaa4c3;
+    }
+
+    /* Final directive */
+
+    .final-directive {
+      margin: 50px auto 0;
+      padding: 36px 18px 24px;
+
+      border-top:
+        1px solid rgba(181, 133, 255, .35);
+
+      text-align: center;
+    }
+
+    .final-label {
+      color: var(--violet);
+    }
+
+    .final-directive h2 {
+      margin: 18px 0 11px;
+
+      color: #e7efff;
+      font-size: clamp(21px, 3.5vw, 31px);
+      line-height: 1.45;
+      letter-spacing: .02em;
+    }
+
+    .final-directive p {
+      margin: 0;
+
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .values {
+      margin: 22px 0;
+
+      color: #d7baff;
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .13em;
+    }
+
+    .values span + span::before {
+      content: " / ";
+      padding: 0 10px;
+      color: #6e687e;
+    }
+
+    .final-motto {
+      margin-top: 18px;
+
+      color: #c5ccda;
+      font-size: 12px;
+      letter-spacing: .08em;
+    }
+
+    /* Agreement button */
+
+    .acknowledgment {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0 20px;
+    }
+
+    .agree-button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+
+      min-width: 235px;
+      padding: 15px 27px;
+
+      border:
+        1px solid rgba(177, 122, 255, .56);
+
+      border-radius: 7px;
+
+      background:
+        rgba(135, 69, 225, .13);
+
+      color: #f1eaff;
+      text-decoration: none;
+      text-align: center;
+
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .17em;
+
+      transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+    }
+
+    .agree-button:hover {
+      transform: translateY(-2px);
+
+      background:
+        rgba(150, 76, 237, .22);
+
+      box-shadow:
+        0 0 24px rgba(126, 55, 213, .17);
+    }
+
+    .agree-button:focus-visible {
+      outline: 2px solid #d9bbff;
+      outline-offset: 4px;
+    }
+
+    /* Footer */
+
+    footer {
+      padding-top: 20px;
+      border-top: 1px solid var(--line);
+
+      color: #747c90;
+
+      font:
+        10px/1.8 Consolas, "Courier New", monospace;
+
+      letter-spacing: .13em;
+      text-align: center;
+    }
+
+    /* Mobile */
+
+    @media (max-width: 700px) {
+      .radar {
+        top: 5px;
+        right: -210px;
+        width: 570px;
+        opacity: .30;
+      }
+
+      .hero {
+        padding: 53px 0 34px;
+      }
+
+      .hero h1 {
+        font-size: clamp(36px, 9vw, 60px);
+        letter-spacing: .08em;
+      }
+
+      .rules-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .intro {
+        margin-bottom: 38px;
+      }
+
+      .motto {
+        padding: 23px 12px;
+      }
+
+      .values span + span::before {
+        padding: 0 5px;
+      }
+    }
+
+    /* Accessibility */
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Animated radar -->
+
+  <div class="radar" aria-hidden="true"></div>
+
+  <div class="container">
+
+    <div class="brand">
+      UC <strong>PAF</strong> ROTC
+    </div>
+
+    <main>
+
+      <!-- Header -->
+
+      <header class="hero">
+
+        <div class="eyebrow">
+          CYCLOPS // TRAINING DIRECTIVE
+        </div>
+
+        <h1>CYCLOPS</h1>
+
+        <p class="subtitle">
+          Rules of Engagement
+        </p>
+
+      </header>
+
+      <!-- Operational motto -->
+
+      <blockquote class="motto">
+        What you <strong>see</strong> here,
+        what you <strong>hear</strong> here,
+        and what you <strong>do</strong> here—
+        when you leave here,
+        <strong>let it stay here.</strong>
+      </blockquote>
+
+      <!-- Introduction -->
+
+      <section class="intro" aria-label="Operational purpose">
+
+        <div class="section-label">
+          THE COVERT OPERATIONS DIRECTIVE
+        </div>
+
+        <p>
+          The Covert Operations exercise will test your
+          ability to operate under uncertainty, maintain
+          discretion, exercise sound judgment, protect
+          information, and accomplish objectives through
+          teamwork and discipline.
+        </p>
+
+      </section>
+
+      <!-- Operational directives -->
+
+      <section aria-labelledby="rules-heading">
+
+        <h2 class="section-heading" id="rules-heading">
+          OPERATIONAL DIRECTIVES
+        </h2>
+
+        <div class="rules-grid">
+
+          <!-- Directive 01 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 01
+            </div>
+
+            <h3>Silence Is Security</h3>
+
+            <p>
+              What happens during the operation stays
+              within the operation. Do not disclose
+              mission details, identities, instructions,
+              or outcomes to unauthorized individuals.
+            </p>
+          </article>
+
+          <!-- Directive 02 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 02
+            </div>
+
+            <h3>Trust Is Earned</h3>
+
+            <p>
+              Not everyone possesses the same information.
+              Share only what is necessary with those
+              authorized to receive it.
+            </p>
+          </article>
+
+          <!-- Directive 03 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 03
+            </div>
+
+            <h3>Observe More, Reveal Less</h3>
+
+            <p>
+              Be attentive to details. Listen carefully,
+              think critically, and avoid unnecessary
+              disclosure of your intentions,
+              observations, or discoveries.
+            </p>
+          </article>
+
+          <!-- Directive 04 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 04
+            </div>
+
+            <h3>Leave No Digital Footprint</h3>
+
+            <p>
+              Do not photograph, record, screenshot,
+              reproduce, or distribute operational
+              materials without explicit authorization.
+            </p>
+          </article>
+
+          <!-- Directive 05 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 05
+            </div>
+
+            <h3>Your Team Is Your Responsibility</h3>
+
+            <p>
+              Coordinate with your assigned members.
+              Protect the integrity of your team,
+              fulfill your designated responsibilities,
+              and never compromise another participant.
+            </p>
+          </article>
+
+          <!-- Directive 06 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 06
+            </div>
+
+            <h3>Question Everything, Verify Everything</h3>
+
+            <p>
+              Do not mistake assumptions for facts.
+              Evaluate information, identify
+              inconsistencies, and verify evidence
+              before acting.
+            </p>
+          </article>
+
+          <!-- Directive 07 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 07
+            </div>
+
+            <h3>The Mission Has Boundaries</h3>
+
+            <p>
+              All activities must remain within the
+              authorized training exercise. Unauthorized
+              access, intrusion, harassment, trespassing,
+              and interference with real-world operations
+              are prohibited.
+            </p>
+          </article>
+
+          <!-- Directive 08 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 08
+            </div>
+
+            <h3>Integrity Above Victory</h3>
+
+            <p>
+              Deception may be part of a simulated
+              scenario, but dishonesty toward facilitators,
+              fabrication of evidence, cheating, and
+              violations of established rules
+              are unacceptable.
+            </p>
+          </article>
+
+          <!-- Directive 09 -->
+
+          <article class="rule safety">
+            <div class="rule-number">
+              DIRECTIVE // 09
+            </div>
+
+            <h3>Safety Overrides Secrecy</h3>
+
+            <p>
+              Report safety concerns, misconduct,
+              privacy breaches, and emergencies
+              immediately to the designated authorities.
+              Confidentiality must never prevent
+              legitimate reporting.
+            </p>
+          </article>
+
+          <!-- Directive 10 -->
+
+          <article class="rule">
+            <div class="rule-number">
+              DIRECTIVE // 10
+            </div>
+
+            <h3>When the Mission Ends, the Silence Remains</h3>
+
+            <p>
+              Do not reveal operational scenarios,
+              solutions, or protected information
+              after completing the exercise unless
+              officially authorized.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Final directive -->
+
+      <section class="final-directive"
+               aria-label="Final directive">
+
+        <div class="final-label">
+          FINAL DIRECTIVE
+        </div>
+
+        <h2>
+          THE MISSION MAY END.
+          <br>
+          YOUR RESPONSIBILITY DOES NOT.
+        </h2>
+
+        <p>
+          Maintain the standards of operational discipline
+          throughout and beyond the exercise.
+        </p>
+
+        <div class="values">
+          <span>DISCIPLINE</span>
+          <span>DISCRETION</span>
+          <span>INTEGRITY</span>
+        </div>
+
+        <div class="final-motto">
+          Observe. Analyze. Adapt. Execute.
+        </div>
+
+      </section>
+
+      <!-- Acknowledgment -->
+
+      <nav class="acknowledgment"
+           aria-label="Acknowledge rules">
+
+        <a class="agree-button" href="index.html">
+          READ AND AGREED
+        </a>
+
+      </nav>
+
+    </main>
+
+    <footer>
+      UC PAF ROTC // CYCLOPS // RULES OF ENGAGEMENT
+    </footer>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101e36">
+<meta name="description" content="UC PAF ROTC Mentor Access Portal">
+<title>UC PAF ROTC</title>
+
+<style>
+:root {
+  --text: #e3ddec;
+  --violet: #a855f7;
+  --purple: #8b5cf6;
+  --lavender: #d8b4fe;
+  --electric: #b75cff;
+  --ice: #f3e8ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  color: var(--text);
+  font-family: "Segoe UI", Arial, sans-serif;
+
+  /* Blue-violet covert-tech atmosphere */
+  background:
+    radial-gradient(
+      ellipse at 14% 16%,
+      rgba(38,146,218,.28),
+      transparent 42%
+    ),
+    radial-gradient(
+      ellipse at 84% 18%,
+      rgba(125,74,205,.24),
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 51% 92%,
+      rgba(53,98,182,.23),
+      transparent 50%
+    ),
+    linear-gradient(
+      135deg,
+      #152e46 0%,
+      #101e36 38%,
+      #191b34 75%,
+      #111d36 100%
+    );
+}
+
+/* Tactical grid */
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .82;
+
+  background-image:
+    linear-gradient(
+      rgba(135,202,248,.115) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(135,202,248,.115) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      rgba(135,202,248,.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(135,202,248,.04) 1px,
+      transparent 1px
+    );
+
+  background-size:
+    52px 52px,
+    52px 52px,
+    13px 13px,
+    13px 13px;
+}
+
+/* Scanlines and ambient targeting rings */
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 4px,
+      rgba(155,204,255,.018) 4px 5px
+    ),
+    radial-gradient(
+      circle at 50% 42%,
+      transparent 0 185px,
+      rgba(135,205,255,.055) 186px 187px,
+      transparent 188px 285px,
+      rgba(135,205,255,.045) 286px 287px,
+      transparent 288px
+    ),
+    linear-gradient(
+      120deg,
+      transparent 15%,
+      rgba(95,166,255,.065) 50%,
+      transparent 86%
+    );
+}
+
+/* Main layout */
+
+.portal {
+  position: relative;
+  z-index: 1;
+  width: min(1120px, calc(100% - 28px));
+  min-height: 100svh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 36px 0 44px;
+  isolation: isolate;
+}
+
+/* Mentors */
+
+.mentors {
+  width: min(860px, 100%);
+  margin: 0 auto 30px;
+}
+
+.mentors-heading {
+  margin: 0 0 19px;
+  text-align: center;
+  color: #b6e2ff;
+
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: .36em;
+
+  text-shadow:
+    0 0 17px rgba(78,185,255,.45);
+}
+
+.mentor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: clamp(10px, 2.2vw, 20px);
+}
+
+.mentor-card {
+  min-width: 0;
+  padding: clamp(6px, 1.2vw, 11px);
+
+  border: 1px solid rgba(139,213,255,.34);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      150deg,
+      rgba(27,62,103,.9),
+      rgba(17,23,49,.96)
+    );
+
+  box-shadow:
+    0 15px 30px rgba(2,9,26,.38),
+    inset 0 1px rgba(206,239,255,.12);
+
+  transition:
+    transform .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease;
+}
+
+.mentor-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(178,232,255,.8);
+
+  box-shadow:
+    0 19px 32px rgba(2,9,26,.45),
+    0 0 24px rgba(118,148,255,.14);
+}
+
+/* Tarot illustrations */
+
+.tarot-art {
+  overflow: hidden;
+  aspect-ratio: 2 / 3;
+
+  border: 1px solid rgba(191,229,255,.38);
+  border-radius: 7px;
+  background: #101c39;
+}
+
+.tarot-art svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tarot-figure {
+  transform-origin: 140px 215px;
+  transition: transform .35s ease;
+}
+
+.mentor-card:hover .tarot-figure {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.mentor-info {
+  text-align: center;
+  padding: 14px 3px 10px;
+}
+
+.mentor-name {
+  margin: 0;
+  color: #f0f7ff;
+  font-size: clamp(13px, 1.9vw, 21px);
+  font-weight: 800;
+  letter-spacing: .16em;
+}
+
+.mentor-subtitle {
+  margin: 7px 0 0;
+  color: #a4caff;
+  font-size: clamp(9px, 1.15vw, 11px);
+  text-transform: uppercase;
+  letter-spacing: .13em;
+}
+
+/* ENTER section */
+
+.action {
+  margin-top: 8px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-line {
+  width: 62px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(190,110,255,.85),
+      transparent
+    );
+}
+
+.enter-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  min-width: 170px;
+  padding: 15px 29px;
+
+  border: 1px solid rgba(186,105,255,.35);
+  border-radius: 8px;
+
+  background: rgba(170,85,255,.035);
+  color: #efe3ff;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 4px;
+
+  cursor: pointer;
+
+  transition:
+    color .3s ease,
+    background .3s ease,
+    border-color .3s ease,
+    box-shadow .3s ease,
+    transform .3s ease;
+}
+
+.enter-button:hover {
+  color: #ffffff;
+  background: rgba(160,65,255,.12);
+  border-color: rgba(208,145,255,.85);
+
+  box-shadow:
+    0 0 20px rgba(153,70,255,.25),
+    inset 0 0 15px rgba(153,70,255,.06);
+
+  transform: translateY(-3px);
+}
+
+.enter-button:active {
+  transform: translateY(0);
+}
+
+.enter-button:focus-visible {
+  outline: 2px solid #d8b4fe;
+  outline-offset: 5px;
+}
+
+.enter-button svg {
+  width: 15px;
+  height: 15px;
+  stroke: #d3a3ff;
+  transition: transform .3s ease;
+}
+
+.enter-button:hover svg {
+  transform: translateX(4px);
+}
+
+/* Mobile layout */
+
+@media (max-width: 580px) {
+  .portal {
+    padding: 30px 0 35px;
+  }
+
+  .mentor-grid {
+    gap: 7px;
+  }
+
+  .mentor-card {
+    padding: 5px;
+    border-radius: 9px;
+  }
+
+  .mentor-info {
+    padding: 10px 1px 7px;
+  }
+
+  .mentor-name {
+    font-size: clamp(9px, 2.6vw, 13px);
+    letter-spacing: .025em;
+  }
+
+  .mentor-subtitle {
+    font-size: clamp(7px, 1.9vw, 9px);
+    letter-spacing: 0;
+  }
+
+  .mentors-heading {
+    font-size: 11px;
+    margin-bottom: 14px;
+  }
+
+  .mentors {
+    margin-bottom: 17px;
+  }
+
+  .enter-button {
+    padding: 14px 24px;
+    font-size: 11px;
+    letter-spacing: 3px;
+  }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Shared tarot art definitions -->
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="0"
+  height="0"
+  aria-hidden="true"
+  style="position:absolute;overflow:hidden"
+>
+<defs>
+
+  <linearGradient id="artBackground" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#193a64"/>
+    <stop offset=".53" stop-color="#0c2041"/>
+    <stop offset="1" stop-color="#080d24"/>
+  </linearGradient>
+
+  <linearGradient id="artSilver" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#f1f8ff"/>
+    <stop offset=".45" stop-color="#9ec5e3"/>
+    <stop offset="1" stop-color="#39668c"/>
+  </linearGradient>
+
+  <linearGradient id="artArmor" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#84b5dc"/>
+    <stop offset=".52" stop-color="#375f8a"/>
+    <stop offset="1" stop-color="#102b4c"/>
+  </linearGradient>
+
+  <radialGradient id="artAura">
+    <stop stop-color="#80d5ff" stop-opacity=".42"/>
+    <stop offset="1" stop-color="#80d5ff" stop-opacity="0"/>
+  </radialGradient>
+
+  <symbol id="artBase" viewBox="0 0 280 420">
+    <rect width="280" height="420" fill="url(#artBackground)"/>
+    <ellipse cx="140" cy="192" rx="135" ry="177" fill="url(#artAura)"/>
+
+    <g fill="none" stroke="#8fc7ec" stroke-width="1" opacity=".28">
+      <circle cx="140" cy="177" r="103"/>
+      <circle cx="140" cy="177" r="81"/>
+      <circle cx="140" cy="177" r="58"/>
+      <path d="M37 177H243M140 74V280M140 74L243 177 140 280 37 177Z"/>
+    </g>
+
+    <g fill="#b6e7ff" opacity=".7">
+      <circle cx="61" cy="98" r="1.5"/>
+      <circle cx="219" cy="98" r="1.5"/>
+      <circle cx="75" cy="258" r="1.2"/>
+      <circle cx="210" cy="263" r="1.2"/>
+    </g>
+
+    <path d="M18 335Q140 280 262 335V410H18Z"
+          fill="#091732" opacity=".75"/>
+
+    <g fill="none" stroke="#86badd" opacity=".24">
+      <path d="M25 340Q140 295 255 340"/>
+      <path d="M25 361Q140 315 255 361"/>
+    </g>
+  </symbol>
+
+  <symbol id="artFrame" viewBox="0 0 280 420">
+    <rect x="9" y="9" width="262" height="402" rx="5"
+          fill="none" stroke="#b4dbf5" stroke-width="2"/>
+
+    <rect x="18" y="18" width="244" height="384" rx="3"
+          fill="none" stroke="#679bc2" stroke-width="1"/>
+
+    <path
+      d="M30 317V128Q30 72 140 30Q250 72 250 128V317"
+      fill="none"
+      stroke="#b1daf0"
+      stroke-width="1.5"
+    />
+
+    <path
+      d="M37 300V130Q37 81 140 41Q243 81 243 130V300"
+      fill="none"
+      stroke="#6596c0"
+    />
+
+    <path d="M140 13L147 24 140 35 133 24Z"
+          fill="#cfebff"/>
+
+    <g fill="none" stroke="#badcf2" stroke-width="1.25">
+      <path d="M25 70Q25 25 70 25M255 70Q255 25 210 25M25 350Q25 395 70 395M255 350Q255 395 210 395"/>
+      <path d="M22 83Q41 64 40 45M258 83Q239 64 240 45M22 337Q41 356 40 375M258 337Q239 356 240 375"/>
+      <path d="M76 382H124L140 370 156 382H204"/>
+    </g>
+
+    <circle cx="140" cy="382" r="8"
+            fill="#153658" stroke="#b8e1f5" stroke-width="1.5"/>
+
+    <path d="M140 375L145 382 140 389 135 382Z"
+          fill="#b9eaff"/>
+
+    <g fill="#b0def6">
+      <path d="M12 209L17 218 12 227 7 218Z"/>
+      <path d="M268 209L273 218 268 227 263 218Z"/>
+    </g>
+  </symbol>
+
+</defs>
+</svg>
+
+<main class="portal">
+
+<section class="mentors" aria-labelledby="mentorsHeading">
+
+  <h1 class="mentors-heading" id="mentorsHeading">
+    MENTORS
+  </h1>
+
+  <div class="mentor-grid">
+
+    <!-- ARTEMIS -->
+
+    <article class="mentor-card" aria-label="Artemis, the Huntress">
+
+      <div class="tarot-art">
+
+        <svg viewBox="0 0 280 420"
+             role="img"
+             aria-label="Artemis, celestial archer in a blue and silver tarot illustration">
+
+          <use href="#artBase"/>
+
+          <g class="tarot-figure">
+            <circle cx="140" cy="167" r="74"
+                    fill="none" stroke="#b7dff4"
+                    stroke-width="2" opacity=".6"/>
+
+            <path
+              d="M185 103A70 70 0 1 0 192 235A55 55 0 1 1 185 103Z"
+              fill="#b4dafa" opacity=".26"
+            />
+
+            <path d="M76 115Q20 205 76 312"
+                  fill="none" stroke="#c7e8fa"
+                  stroke-width="5" stroke-linecap="round"/>
+
+            <path d="M76 115V312M52 216H217"
+                  fill="none" stroke="#d9efff" stroke-width="1.5"/>
+
+            <path d="M217 216L202 210V222Z" fill="#e6f6ff"/>
+
+            <path
+              d="M105 172Q100 125 140 117Q179 127 175 172L184 232H98Z"
+              fill="#24466b" stroke="#a5cee9" stroke-width="2"
+            />
+
+            <path
+              d="M118 155Q119 138 140 137Q161 138 162 155L158 185Q150 201 140 203Q130 201 122 185Z"
+              fill="url(#artSilver)" stroke="#d7efff" stroke-width="1.5"
+            />
+
+            <path
+              d="M113 167Q109 126 141 122Q171 128 166 170L155 143Q140 153 117 146Z"
+              fill="#233f63" stroke="#99c8e6" stroke-width="1.5"
+            />
+
+            <path d="M125 170L135 171M145 171L155 170"
+                  stroke="#315979" stroke-width="2"
+                  stroke-linecap="round"/>
+
+            <path d="M140 174L137 186 143 187"
+                  fill="none" stroke="#507d9b" stroke-width="1.3"/>
+
+            <path
+              d="M115 207Q85 221 76 276L61 335Q140 360 219 335L204 276Q195 221 165 207L140 230Z"
+              fill="url(#artArmor)" stroke="#a9d5ee" stroke-width="2"
+            />
+
+            <path d="M113 216L93 227 77 272 117 253Z"
+                  fill="url(#artSilver)" stroke="#c9e7f8" stroke-width="1.5"/>
+
+            <path d="M167 216L187 227 203 272 163 253Z"
+                  fill="url(#artSilver)" stroke="#c9e7f8" stroke-width="1.5"/>
+
+            <path d="M122 228L140 245 158 228 163 302 140 321 117 302Z"
+                  fill="#214c74" stroke="#a8d6ee" stroke-width="1.6"/>
+
+            <path d="M140 245V315" stroke="#8cbfe0" stroke-width="1.5"/>
+
+            <path
+              d="M145 262A12 12 0 1 0 145 285A9 9 0 1 1 145 262Z"
+              fill="#d6f0ff"
+            />
+
+            <path d="M100 245L76 213 66 220 88 265Z"
+                  fill="#668fb2" stroke="#c7e7fa" stroke-width="1.5"/>
+
+            <circle cx="76" cy="216" r="6" fill="#c9e7f8"/>
+          </g>
+
+          <use href="#artFrame"/>
+        </svg>
+      </div>
+
+      <div class="mentor-info">
+        <h2 class="mentor-name">ARTEMIS</h2>
+        <p class="mentor-subtitle">The Huntress</p>
+      </div>
+
+    </article>
+
+    <!-- CYBORG -->
+
+    <article class="mentor-card" aria-label="Cyborg, the Watcher">
+
+      <div class="tarot-art">
+
+        <svg viewBox="0 0 280 420"
+             role="img"
+             aria-label="Cyborg, cybernetic watcher in a blue and silver tarot illustration">
+
+          <use href="#artBase"/>
+
+          <g class="tarot-figure">
+
+            <circle cx="140" cy="165" r="76"
+                    fill="none" stroke="#b6dff5"
+                    stroke-width="2" stroke-dasharray="5 9" opacity=".75"/>
+
+            <circle cx="140" cy="165" r="65"
+                    fill="none" stroke="#6caccf"
+                    stroke-width="2" opacity=".55"/>
+
+            <g stroke="#86c7ea" stroke-width="2"
+               fill="none" opacity=".7">
+              <path d="M140 80V104M140 226V250M55 165H79M201 165H225M82 107L97 122M198 107L183 122M82 223L97 208M198 223L183 208"/>
+            </g>
+
+            <path d="M120 191V230L140 250 160 230V191Z"
+                  fill="#214c73" stroke="#abd8f0" stroke-width="2"/>
+
+            <path
+              d="M112 140L121 119 140 111 159 119 168 140 166 185 153 203H127L114 185Z"
+              fill="url(#artSilver)" stroke="#e0f2ff" stroke-width="2"
+            />
+
+            <path d="M112 140L121 119 139 115V200L127 203 114 185Z"
+                  fill="#95bdd8"/>
+
+            <path d="M141 115L159 119 168 140 166 185 153 203 141 200Z"
+                  fill="#315f86" stroke="#afd9ef"/>
+
+            <path d="M119 141L140 130 161 141 156 151H124Z"
+                  fill="#1e456d" stroke="#aad8f2" stroke-width="1.5"/>
+
+            <path d="M119 160H134M146 160H161"
+                  stroke="#d1efff" stroke-width="4"
+                  stroke-linecap="round"/>
+
+            <path d="M140 151V188M147 173L158 177 153 186"
+                  fill="none" stroke="#bce5fb" stroke-width="1.5"/>
+
+            <path d="M127 191H153" stroke="#24486c" stroke-width="2"/>
+
+            <rect x="105" y="148" width="10" height="32" rx="3"
+                  fill="#386c94" stroke="#b5e1f8" stroke-width="1.5"/>
+
+            <rect x="165" y="148" width="10" height="32" rx="3"
+                  fill="#386c94" stroke="#b5e1f8" stroke-width="1.5"/>
+
+            <path
+              d="M118 220L97 226Q73 245 64 318L62 341Q140 360 218 341L216 318Q207 245 183 226L162 220 140 241Z"
+              fill="url(#artArmor)" stroke="#b7dff5" stroke-width="2"
+            />
+
+            <path d="M111 225L82 231 65 276 108 269Z"
+                  fill="url(#artSilver)" stroke="#c7e9ff" stroke-width="1.5"/>
+
+            <path d="M169 225L198 231 215 276 172 269Z"
+                  fill="url(#artSilver)" stroke="#c7e9ff" stroke-width="1.5"/>
+
+            <path d="M118 248L140 262 162 248 168 303 140 326 112 303Z"
+                  fill="#1a456f" stroke="#93c8e9" stroke-width="2"/>
+
+            <path d="M140 262V326"
+                  stroke="#b0e3ff" stroke-width="2"/>
+
+            <circle cx="140" cy="286" r="15"
+                    fill="#123958" stroke="#a4e4ff" stroke-width="3"/>
+
+            <circle cx="140" cy="286" r="7" fill="#b5eeff"/>
+
+            <g fill="none" stroke="#9edbfa" stroke-width="1.5">
+              <path d="M83 291L104 291 120 276M197 291L176 291 160 276M92 318H118L128 305M188 318H162L152 305"/>
+            </g>
+
+            <g fill="#c3edff">
+              <circle cx="83" cy="291" r="3"/>
+              <circle cx="197" cy="291" r="3"/>
+              <circle cx="92" cy="318" r="3"/>
+              <circle cx="188" cy="318" r="3"/>
+            </g>
+
+          </g>
+
+          <use href="#artFrame"/>
+        </svg>
+      </div>
+
+      <div class="mentor-info">
+        <h2 class="mentor-name">CYBORG</h2>
+        <p class="mentor-subtitle">The Watcher</p>
+      </div>
+
+    </article>
+
+    <!-- TERMINATOR -->
+
+    <article class="mentor-card" aria-label="Terminator, the Machine">
+
+      <div class="tarot-art">
+
+        <svg viewBox="0 0 280 420"
+             role="img"
+             aria-label="Terminator, robotic machine in a blue and silver tarot illustration">
+
+          <use href="#artBase"/>
+
+          <g class="tarot-figure">
+
+            <circle cx="140" cy="172" r="75"
+                    fill="none" stroke="#b6dff5"
+                    stroke-width="2" opacity=".6"/>
+
+            <circle cx="140" cy="172" r="84"
+                    fill="none" stroke="#6caccf"
+                    stroke-dasharray="3 8" opacity=".55"/>
+
+            <path
+              d="M97 146L107 120 123 110 140 104 157 110 173 120 183 146 175 165H105Z"
+              fill="url(#artSilver)" stroke="#e0f2ff" stroke-width="2"
+            />
+
+            <path d="M110 136L140 115 170 136 162 159H118Z"
+                  fill="#28567e" stroke="#a9d8f3" stroke-width="1.5"/>
+
+            <path d="M140 115V153"
+                  stroke="#b8dff3" stroke-width="1.5"/>
+
+            <path
+              d="M102 151L116 141H164L178 151 175 192 160 207 155 225H125L120 207 105 192Z"
+              fill="url(#artSilver)" stroke="#e3f2ff" stroke-width="2"
+            />
+
+            <path d="M111 168L135 163 133 183 117 185Z"
+                  fill="#092744" stroke="#79bce5" stroke-width="1.5"/>
+
+            <path d="M169 168L145 163 147 183 163 185Z"
+                  fill="#092744" stroke="#79bce5" stroke-width="1.5"/>
+
+            <ellipse cx="124" cy="175" rx="7" ry="4" fill="#aeeaff"/>
+            <ellipse cx="156" cy="175" rx="7" ry="4" fill="#aeeaff"/>
+
+            <path d="M140 180L134 198H146Z"
+                  fill="#163854"/>
+
+            <path d="M119 206L126 225H154L161 206 153 211H127Z"
+                  fill="#315b7e" stroke="#d0ebfb" stroke-width="1.5"/>
+
+            <g stroke="#cceafa" stroke-width="2.5">
+              <path d="M130 212V223M137 212V225M144 212V225M151 212V223"/>
+            </g>
+
+            <path d="M105 187L94 207 108 220M175 187L186 207 172 220"
+                  fill="none" stroke="#a7d4ee" stroke-width="4"/>
+
+            <path d="M125 225L120 248 140 265 160 248 155 225Z"
+                  fill="#214b72" stroke="#a8daf5" stroke-width="2"/>
+
+            <g stroke="#8fc4e3" stroke-width="2">
+              <path d="M123 236H157M126 245H154M132 254H148"/>
+            </g>
+
+            <path
+              d="M118 247L91 251Q71 266 61 324L60 342Q140 359 220 342L219 324Q209 266 189 251L162 247 140 270Z"
+              fill="url(#artArmor)" stroke="#b5dff6" stroke-width="2"
+            />
+
+            <path d="M111 253L84 258 64 292 102 305 124 280Z"
+                  fill="url(#artSilver)" stroke="#c8eafb" stroke-width="1.5"/>
+
+            <path d="M169 253L196 258 216 292 178 305 156 280Z"
+                  fill="url(#artSilver)" stroke="#c8eafb" stroke-width="1.5"/>
+
+            <path d="M119 276L140 286 161 276 172 315 140 335 108 315Z"
+                  fill="#1c4268" stroke="#a5d8f3" stroke-width="2"/>
+
+            <path d="M140 286V334"
+                  stroke="#83b9dd" stroke-width="2"/>
+
+            <path d="M140 292L149 304 140 316 131 304Z"
+                  fill="#a5e3ff" stroke="#d8f5ff" stroke-width="1.5"/>
+
+            <g stroke="#90c8e8" stroke-width="1.5" fill="none">
+              <path d="M83 305L107 315M197 305L173 315M97 328L120 333M183 328L160 333"/>
+            </g>
+
+          </g>
+
+          <use href="#artFrame"/>
+        </svg>
+      </div>
+
+      <div class="mentor-info">
+        <h2 class="mentor-name">TERMINATOR</h2>
+        <p class="mentor-subtitle">The Machine</p>
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
+
+<!-- ENTER BUTTON -->
+
+<div class="action">
+
+  <div class="action-line" aria-hidden="true"></div>
+
+  <button
+    class="enter-button"
+    id="enterButton"
+    type="button"
+    aria-label="Enter operation code"
+  >
+
+    ENTER
+
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M5 12 H19"/>
+      <path d="M13 6 L19 12 L13 18"/>
+    </svg>
+
+  </button>
+
+</div>
+
+</main>
+
+<script>
+"use strict";
+
+/*
+  UC PAF ROTC — MENTOR ACCESS PORTAL
+
+  Clicking ENTER opens a filename prompt.
+
+  Examples:
+    alpha        -> alpha.html
+    mission01    -> mission01.html
+    briefing.html -> briefing.html
+
+  The destination must be in the same folder
+  as this index.html file.
+*/
+
+const enterButton = document.getElementById("enterButton");
+
+enterButton.addEventListener("click", function () {
+
+  const response = window.prompt(
+    "FILE ACCESS\n\n" +
+    "OPERATION CODE:"
+  );
+
+  if (response === null) {
+    return;
+  }
+
+  let filename = response.trim();
+
+  // Allow input with or without the .html extension.
+  filename = filename.replace(/\.html$/i, "");
+
+  // Restrict to simple filenames.
+  const validFilename = /^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$/;
+
+  if (!validFilename.test(filename)) {
+
+    window.alert(
+      "INVALID FILE IDENTIFIER\n\n" +
+      "Enter a valid filename using letters, " +
+      "numbers, underscores, or hyphens.\n\n" +
+      "Do not include folder paths, spaces, " +
+      "or special characters."
+    );
+
+    return;
+  }
+
+  const destination = filename + ".html";
+
+  // Navigate within the same directory and browser tab.
+  window.location.assign(destination);
+
+});
+</script>
+
+</body>
+</html>
