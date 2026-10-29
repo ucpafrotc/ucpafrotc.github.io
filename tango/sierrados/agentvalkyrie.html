@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#030406">
+<meta name="description" content="CYCLOPS Agent Briefing Terminal">
+<title>CYCLOPS | Agent Briefing Terminal</title>
+
+<!-- ================================================================
+     WEBMASTER EDITING AREA 01 — AGENT NAME
+     Change LOCARD below to the assigned agent's name.
+     Example: const AGENT_NAME = "SHERLOCK";
+     ================================================================ -->
+<script>const AGENT_NAME = "VALKYRIE";</script>
+
+<!-- ================================================================
+     WEBMASTER EDITING AREA 02 — MISSION INSTRUCTIONS
+     Insert real HTML BETWEEN the <template> tags, not inside comments.
+     If empty, the page says AWAITING MISSION INSTRUCTIONS.
+     You may add <section>, <h3>, <p>, <ol>, <ul>, <li>, and <a>.
+     EXAMPLE: remove the inner comment markers to activate it.
+     ================================================================ -->
+<template id="webmaster-mission">
+  <!--
+  <section class="mission-order">
+    <h3>MISSION 01 — INITIAL RECONNAISSANCE</h3>
+    <p>Review the authorized briefing material.</p>
+    <ol>
+      <li>Identify your assigned objectives.</li>
+      <li>Record your findings accurately.</li>
+      <li>Submit your output as directed.</li>
+    </ol>
+    <p><strong>Deadline:</strong> To be announced.</p>
+  </section>
+  -->
+</template>
+
+<style>
+:root {
+  color-scheme:dark;
+  --bg:#030406; --text:#edf1fa; --muted:#abb3c4;
+  --blue:#b7eaff; --violet:#b889ff;
+  --line:rgba(165,177,210,.2);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body{margin:0;min-height:100vh;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:"Segoe UI",Arial,sans-serif;isolation:isolate}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    linear-gradient(rgba(153,160,195,.1) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(153,160,195,.1) 1px,transparent 1px),
+    linear-gradient(rgba(153,160,195,.027) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(153,160,195,.027) 1px,transparent 1px),
+    radial-gradient(ellipse at 78% 18%,rgba(107,37,175,.15),transparent 40%),#030406;
+  background-size:48px 48px,48px 48px,12px 12px,12px 12px,auto,auto;
+}
+body::after{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent 0 6px,rgba(190,180,255,.014) 6px 7px),radial-gradient(ellipse at center,transparent 25%,rgba(0,0,0,.52));
+}
+/* Moving violet radar and scanning line */
+.radar{position:fixed;top:-190px;right:-210px;z-index:-1;width:min(90vw,780px);aspect-ratio:1;border:1px solid rgba(175,119,255,.16);border-radius:50%;opacity:.55;overflow:hidden;pointer-events:none;
+  background:radial-gradient(circle,transparent 0 24.8%,rgba(177,113,255,.15) 25%,transparent 25.2% 49.8%,rgba(177,113,255,.15) 50%,transparent 50.2% 74.8%,rgba(177,113,255,.15) 75%,transparent 75.2%),linear-gradient(90deg,transparent 49.9%,rgba(177,113,255,.17) 50%,transparent 50.1%),linear-gradient(transparent 49.9%,rgba(177,113,255,.17) 50%,transparent 50.1%);
+}
+.radar::before{content:"";position:absolute;inset:0;border-radius:50%;background:conic-gradient(transparent 0deg,transparent 278deg,rgba(122,50,224,.025) 298deg,rgba(159,80,255,.18) 337deg,rgba(219,180,255,.58) 360deg);animation:radarRotation 12s linear infinite}
+.radar::after{content:"";position:absolute;top:50%;left:50%;width:7px;height:7px;transform:translate(-50%,-50%);border-radius:50%;background:#dac1ff;box-shadow:0 0 12px #ae70ff,0 0 35px rgba(160,80,255,.65)}
+.scanline{position:fixed;top:-5px;left:0;z-index:0;width:100%;height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(160,105,255,.22),rgba(210,170,255,.52),transparent);box-shadow:0 0 25px rgba(145,90,255,.3);opacity:.4;animation:verticalScan 16s linear infinite}
+@keyframes radarRotation{to{transform:rotate(360deg)}}
+@keyframes verticalScan{to{top:100vh}}
+
+.container{position:relative;z-index:1;width:min(940px,calc(100% - 40px));margin:auto;padding:28px 0 60px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand,.status,.hero-label,.section-heading,.protocol-number,.mission-meta,.final-label,.await,footer{font-family:Consolas,"Courier New",monospace;letter-spacing:.15em}
+.brand{font-size:11px;font-weight:700;color:#a5aec3}.brand strong{color:var(--blue)}
+.status{display:flex;align-items:center;gap:9px;font-size:10px;color:#b3a3d5}
+.status-dot{width:7px;height:7px;border-radius:50%;background:#a866ff;box-shadow:0 0 12px #a866ff;animation:blink 2.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+.hero{padding:76px 0 44px;text-align:center}
+.hero-label{color:var(--violet);font-size:11px;font-weight:700;letter-spacing:.28em}
+.hero h1{margin:20px 0 13px;color:var(--blue);font-family:"Arial Black","Segoe UI Black",Arial,sans-serif;font-size:clamp(40px,8.5vw,88px);font-weight:900;letter-spacing:.13em;line-height:1.1;text-shadow:0 0 8px rgba(190,240,255,.5),0 0 25px rgba(80,180,255,.45),0 0 55px rgba(35,130,255,.2)}
+.hero-subtitle{margin:0;color:#abb5cc;font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase}
+
+/* Cycling transmission messages */
+.transmission{position:relative;max-width:850px;min-height:154px;margin:10px auto 22px;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center;border-top:1px solid rgba(179,119,255,.36);border-bottom:1px solid rgba(179,119,255,.17);background:linear-gradient(90deg,transparent,rgba(67,34,107,.23),transparent)}
+.transmission-message{position:absolute;width:100%;padding:20px 24px;color:#f1eaff;font-size:clamp(18px,3.5vw,28px);font-weight:700;letter-spacing:.07em;line-height:1.5;opacity:0;animation:messageCycle 15s ease-in-out infinite}
+.transmission-message span{color:#d7b0ff}
+.transmission-message:nth-child(1){animation-delay:0s}
+.transmission-message:nth-child(2){animation-delay:-10s}
+.transmission-message:nth-child(3){animation-delay:-5s}
+@keyframes messageCycle{0%{opacity:0;transform:translateY(9px);filter:blur(5px)}5%,25%{opacity:1;transform:none;filter:none}32%,100%{opacity:0;transform:translateY(-8px);filter:blur(4px)}}
+.intro{max-width:740px;margin:0 auto 65px;text-align:center}
+.intro p{margin:0 0 15px;color:#b5bccb;font-size:14px;line-height:1.95}
+.section-heading{display:flex;align-items:center;gap:18px;margin:0 0 18px;color:#dfecff;font-size:13px;font-weight:800;letter-spacing:.19em}
+.section-heading::after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(179,126,255,.4),transparent)}
+.protocols{margin-bottom:64px}.protocol-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:38px}
+.protocol{padding:19px 0 23px;border-top:1px solid var(--line)}
+.protocol-number{color:var(--violet);font-size:11px;font-weight:700;letter-spacing:.2em}
+.protocol h3{margin:10px 0;color:#eef0f8;font-size:15px;font-weight:750;letter-spacing:.035em;text-transform:uppercase}
+.protocol p{margin:0;color:#aeb6c6;font-size:13px;line-height:1.85}
+.protocol.confidential .protocol-number{color:#dfafff}
+
+/* No-capture notice and mission instructions */
+.mission-section{margin:15px auto 65px}
+.confidentiality-notice{display:flex;align-items:flex-start;gap:13px;margin-bottom:20px;padding:17px 19px;border:1px solid rgba(199,151,255,.38);border-left:3px solid var(--violet);border-radius:6px;background:rgba(39,20,64,.55)}
+.notice-symbol{color:#d9baff;font:900 20px Consolas,monospace}
+.confidentiality-notice strong{display:block;color:#eedfff;font:800 12px/1.5 Consolas,monospace;letter-spacing:.06em}
+.confidentiality-notice p{margin:6px 0 0;color:#bcb4ca;font-size:12px;line-height:1.75}
+.mission-panel{position:relative;padding:30px;border:1px solid rgba(181,125,255,.3);border-radius:9px;background:linear-gradient(135deg,rgba(20,16,33,.92),rgba(8,10,17,.94));box-shadow:0 15px 40px rgba(0,0,0,.25)}
+.mission-panel::before{content:"";position:absolute;top:0;left:15%;right:15%;height:1px;background:linear-gradient(90deg,transparent,rgba(201,155,255,.85),transparent)}
+.mission-heading{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:23px}
+.mission-heading h2{margin:0;color:#e7dafa;font-size:15px;font-weight:800;letter-spacing:.17em}
+.mission-meta{color:#ae92cf;font-size:10px}
+.pending{padding:40px 15px;text-align:center;border:1px dashed rgba(159,120,205,.22);border-radius:5px}
+.pending-symbol{margin-bottom:15px;color:#b58dff;font:700 25px Consolas,monospace;animation:blink 3s ease-in-out infinite}
+.pending strong{display:block;color:#e2d1fb;font-size:13px;letter-spacing:.16em}
+.pending p{margin:13px 0 0;color:#8990a2;font-size:12px;line-height:1.8}
+.mission-content{color:#c4cada;font-size:14px;line-height:1.9}
+.mission-content h3{color:#dfc5ff;font-size:16px;letter-spacing:.08em}
+.mission-content p{margin:12px 0}.mission-content ol,.mission-content ul{margin:15px 0;padding-left:25px}.mission-content li{margin:9px 0}
+.mission-content strong{color:#ece3ff}.mission-content a{color:#bceaff;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.mission-content a:hover{color:#fff}.mission-order+.mission-order{margin-top:30px;padding-top:25px;border-top:1px solid var(--line)}
+
+.final{padding:30px 0 20px;border-top:1px solid rgba(181,125,255,.3);text-align:center}
+.final-label{color:var(--violet);font-size:11px;font-weight:700;letter-spacing:.22em}
+.final h2{margin:20px 0 13px;color:#eae6fa;font-size:clamp(23px,4vw,36px);letter-spacing:.045em}
+.final p{max-width:690px;margin:auto;color:#adb4c5;font-size:13px;line-height:1.9}
+.await{margin-top:32px;color:#c3a0f8;font-size:11px;font-weight:700;letter-spacing:.19em;animation:blink 5s ease-in-out infinite}
+footer{margin-top:55px;padding-top:22px;border-top:1px solid var(--line);color:#747b8d;font-size:10px;text-align:center}
+
+/* Notice for blocked standard browser actions */
+.protection-toast{position:fixed;z-index:1000;left:50%;bottom:22px;transform:translate(-50%,20px);width:min(92vw,500px);padding:15px 20px;border:1px solid rgba(191,142,255,.6);border-radius:8px;background:rgba(18,11,30,.97);box-shadow:0 18px 45px rgba(0,0,0,.5);color:#f2e8ff;text-align:center;font:700 12px/1.6 Consolas,monospace;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.protection-toast.visible{opacity:1;transform:translate(-50%,0)}
+
+@media(max-width:700px){
+  .container{width:calc(100% - 28px)}.radar{width:560px;right:-260px;top:30px;opacity:.35}
+  .hero{padding:65px 0 38px}.hero h1{font-size:clamp(37px,9vw,62px);letter-spacing:.08em}
+  .transmission{min-height:165px}.transmission-message{font-size:19px}
+  .protocol-grid{grid-template-columns:1fr}.mission-panel{padding:22px 18px}
+  .section-heading{font-size:12px}.status{font-size:9px}.brand{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .transmission-message{display:none}.transmission-message:first-child{display:block;opacity:1;filter:none;transform:none}
+  .pending-symbol,.await{opacity:1}
+}
+@media print {
+  body > *{display:none!important}
+  body::before{display:none!important}
+  body::after{content:"CYCLOPS — PRINTING NOT AUTHORIZED";position:static;display:block!important;background:#fff;color:#000;padding:35px;font:700 20px Arial,sans-serif}
+}
+</style>
+</head>
+<body>
+<div class="radar" aria-hidden="true"></div>
+<div class="scanline" aria-hidden="true"></div>
+<div id="protectionToast" class="protection-toast" role="status" aria-live="polite"></div>
+<div class="container">
+  <header class="topbar">
+    <div class="brand">UC <strong>PAF</strong> ROTC</div>
+    <div class="status"><span class="status-dot"></span>CHANNEL ACTIVE</div>
+  </header>
+  <main>
+    <section class="hero" aria-label="CYCLOPS terminal">
+      <div class="hero-label">CYCLOPS // SECURE BRIEFING TERMINAL</div>
+      <h1>CYCLOPS</h1>
+      <p class="hero-subtitle">Agent Communications</p>
+    </section>
+
+    <section class="transmission" aria-label="Welcome transmission">
+      <div class="transmission-message">WELCOME, AGENT <span data-agent-name>LOCARD</span>.</div>
+      <div class="transmission-message">YOU WILL RECEIVE YOUR <span>MISSION INSTRUCTIONS</span> HERE.</div>
+      <div class="transmission-message">MONITOR THIS CHANNEL. <span>COMPLY PROMPTLY.</span></div>
+    </section>
+
+    <section class="intro" aria-label="Agent introduction">
+      <p>You have been designated to participate in CYCLOPS. This terminal will serve as your designated briefing point throughout the operation.</p>
+      <p>Instructions, objectives, operational updates, and subsequent assignments will be communicated through this channel.</p>
+      <p>Remain attentive. New information may alter your priorities, introduce additional objectives, or require immediate action.</p>
+    </section>
+
+    <section class="protocols" aria-labelledby="protocolHeading">
+      <h2 class="section-heading" id="protocolHeading">AGENT PROTOCOLS</h2>
+      <div class="protocol-grid">
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 01</div><h3>Monitor the Terminal</h3><p>Regularly check this terminal for newly issued mission instructions, amendments, and operational updates.</p></article>
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 02</div><h3>Understand Your Assignment</h3><p>Read every instruction completely. Identify the objectives, required outputs, deadlines, and special conditions before commencing your task.</p></article>
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 03</div><h3>Acknowledge Instructions</h3><p>Confirm receipt of new assignments through the designated communication channel whenever acknowledgment is required.</p></article>
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 04</div><h3>Comply Promptly</h3><p>Execute assigned tasks within the prescribed time frame. Communicate delays, obstacles, or difficulties without unnecessary hesitation.</p></article>
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 05</div><h3>Maintain Accurate Records</h3><p>Document your progress, observations, decisions, and completed objectives accurately whenever the assignment requires operational reporting.</p></article>
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 06</div><h3>Follow Submission Procedures</h3><p>Submit all required mission outputs in the prescribed format and through the designated submission channel.</p></article>
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 07</div><h3>Seek Clarification</h3><p>When instructions are incomplete, contradictory, or unclear, request clarification from the authorized facilitator rather than relying on unsupported assumptions.</p></article>
+        <article class="protocol"><div class="protocol-number">PROTOCOL // 08</div><h3>Remain Operationally Ready</h3><p>Remain available for additional briefings, task modifications, reassignment, and mission completion instructions.</p></article>
+        <article class="protocol confidential"><div class="protocol-number">PROTOCOL // 09</div><h3>Protect Mission Instructions</h3><p>Mission instructions and associated materials are confidential. Screenshots, screen recordings, photographs, copying, printing, reproduction, and redistribution are prohibited without explicit authorization. Report any suspected unauthorized disclosure to the designated facilitator.</p></article>
+      </div>
+    </section>
+
+    <!-- Mission content is inserted from WEBMASTER EDITING AREA 02 at the top. -->
+    <section class="mission-section" aria-label="Mission instructions">
+      <aside class="confidentiality-notice" role="note" aria-label="Confidentiality directive">
+        <div class="notice-symbol" aria-hidden="true">!</div>
+        <div><strong>NO SCREENSHOTS • NO PHOTOGRAPHY • NO RECORDING</strong>
+        <p>Mission instructions are confidential. Do not capture, copy, print, save, or share these materials without explicit authorization. Report any suspected disclosure to the designated facilitator.</p></div>
+      </aside>
+      <div class="mission-panel">
+        <div class="mission-heading"><h2>MISSION INSTRUCTIONS</h2><span class="mission-meta">INCOMING DIRECTIVES</span></div>
+        <div class="mission-content" id="missionContent">
+          <div class="pending">
+            <div class="pending-symbol" aria-hidden="true">[ -- ]</div>
+            <strong>AWAITING MISSION INSTRUCTIONS</strong>
+            <p>No mission instructions have been issued at this time. Continue monitoring this terminal for further transmissions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="final-label">FINAL TRANSMISSION</div>
+      <h2>COMPLY PROMPTLY.</h2>
+      <p>Your effectiveness will be measured through precision, responsiveness, adaptability, and the successful completion of assigned objectives.</p>
+      <div class="await">AWAIT FURTHER TRANSMISSION</div>
+    </section>
+  </main>
+  <footer>UC PAF ROTC // CYCLOPS // AGENT TERMINAL</footer>
+</div>
+
+<script>
+"use strict";
+
+/* Agent name: automatically replace the welcome name. */
+const nameToDisplay = (typeof AGENT_NAME === "string" && AGENT_NAME.trim())
+  ? AGENT_NAME.trim().toUpperCase() : "UNASSIGNED";
+document.querySelectorAll("[data-agent-name]").forEach(el => {
+  el.textContent = nameToDisplay;
+});
+
+/* Missions: load the HTML between the template tags above. */
+const missionTemplate = document.getElementById("webmaster-mission");
+const missionContent = document.getElementById("missionContent");
+if (missionTemplate && missionContent &&
+    (missionTemplate.content.querySelector("*") || missionTemplate.content.textContent.trim())) {
+  missionContent.replaceChildren(missionTemplate.content.cloneNode(true));
+}
+
+/* ================================================================
+   STANDARD BROWSER COPY / INSPECTION DETERRENTS
+
+   IMPORTANT: These do NOT actually secure static HTML content.
+   They cannot guarantee source-code secrecy or stop operating-
+   system screenshots or photography with external devices.
+   For truly confidential instructions, use authenticated,
+   server-controlled access with appropriate permissions.
+   ================================================================ */
+const protectionToast = document.getElementById("protectionToast");
+let toastTimeout;
+function showProtectionNotice() {
+  protectionToast.textContent =
+    "RESTRICTED: Copying, printing, recording and source inspection are not authorized.";
+  protectionToast.classList.add("visible");
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => protectionToast.classList.remove("visible"), 3200);
+}
+
+// Disable ordinary right-click, copying, selection, and dragging.
+["contextmenu", "copy", "cut", "dragstart", "selectstart"].forEach(type => {
+  document.addEventListener(type, event => {
+    event.preventDefault();
+    showProtectionNotice();
+  }, {capture: true});
+});
+
+// Deter common source, developer-tools, save, print, and copy shortcuts.
+document.addEventListener("keydown", event => {
+  const key = event.key.toLowerCase();
+  const mod = event.ctrlKey || event.metaKey;
+  const restricted = key === "f12" ||
+    (mod && ["u", "s", "p", "c", "a", "x"].includes(key)) ||
+    (mod && event.shiftKey && ["i", "j", "c", "k"].includes(key));
+  if (restricted) {
+    event.preventDefault();
+    event.stopPropagation();
+    showProtectionNotice();
+  }
+}, {capture: true});
+
+// Warning only: PrintScreen and system screenshots cannot be blocked reliably.
+document.addEventListener("keyup", event => {
+  if (event.key === "PrintScreen") showProtectionNotice();
+});
+</script>
+</body>
+</html>
